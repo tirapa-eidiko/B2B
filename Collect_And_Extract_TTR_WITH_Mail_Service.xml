@@ -1,0 +1,60 @@
+<process name="Collect_And_Extract_TTR">
+   <sequence name="Sequence Start">
+     <!-- Collect Date from Source-->
+	 <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_COLLECT</assign>
+            <assign to="bootstrap">false</assign>
+            <assign to="collectionFolder">C:\Collect</assign>
+            <assign to="collectMultiple">false</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+     <!-- Extract Date To Destination-->
+	 <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_EXTRACT</assign>
+            <assign to="extractionFolder">C:\Extract</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+     <!-- Nofify Successful Transper from Source to Target-->
+	 <operation name="SMTP Send Service">
+         <participant name="InternalSMTP" />
+         <output message="SMTP_SEND_SERVICEInputMessage">
+            <assign to="xport-smtp-mailfrom">fg_sysadmin@IISCLIENT-com.eidikointernal.com</assign>
+            <assign to="xport-smtp-mailsubject" from="/ProcessData/FileName/text()" />
+            <assign to="xport-smtp-mailto">eidiko@IISCLIENT-com.eidikointernal.com</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg" />
+      </operation>
+	  
+	  <!-- On Error of above three Operations , execute Notify user-->
+      <onFault>
+         <sequence>
+            <assign to="." from="DOMToDoc(/ProcessData,'PrimaryDocument')" />
+            <operation name="SMTP Send Service">
+               <participant name="InternalSMTP" />
+               <output message="SMTP_SEND_SERVICEInputMessage">
+                  <assign to="xport-smtp-mailfrom">fg_sysadmin@IISCLIENT-com.eidikointernal.com</assign>
+                  <assign to="xport-smtp-mailsubject" from="/ProcessData/Prev_NotSuccess_Adv_Status/text()" />
+                  <assign to="xport-smtp-mailto">eidiko@IISCLIENT-com.eidikointernal.com</assign>
+                  <assign to="." from="*" />
+               </output>
+               <input message="inmsg" />
+            </operation>
+         </sequence>
+      </onFault>
+	  
+	  
+   </sequence>
+</process>

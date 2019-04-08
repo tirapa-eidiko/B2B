@@ -1,0 +1,19 @@
+<!--Create A LIGHT WEIGHT JDBC CONNECTOR with below statement and create process with the belwo operation  -->
+<!--SELECT  * FROM DB2ADMIN.TRANSACTION -->
+
+<process name = "DB_TO_FOLDER"> 
+  <sequence>    
+       <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_EXTRACT</assign>
+            <assign to="extractionFolder">C:\Extract</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+  </sequence>
+</process>
+

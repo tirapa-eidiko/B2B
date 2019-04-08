@@ -1,0 +1,81 @@
+<process name="FT_MULTYCOLLECT_TTR">
+   <rule name="hasMoreDocs">
+      <condition>/ProcessData/fd.DONE/text() = '0'</condition>
+   </rule>
+   <sequence name="Sequence Start">
+      <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_COLLECT</assign>
+            <assign to="bootstrap">false</assign>
+            <assign to="collectionFolder">C:\Multiple</assign>
+            <assign to="collectMultiple">true</assign>
+            <assign to="deleteAfterCollect">false</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="Status_Rpt('status')" />
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <sequence name="forSequence">
+         <operation name="For Each Document">
+            <participant name="ForEachDocument" />
+            <output message="ForEachDocumentTypeInputMessage">
+               <assign to="." from="*" />
+               <!-- <assign to="DOCUMENT_NAME_PREFIX">fsa</assign>-->
+               <assign to="ITERATOR_NAME">fd</assign>
+            </output>
+            <input message="inmsg">
+               <assign to="." from="*" />
+            </input>
+         </operation>
+         <operation name="File System Adapter">
+            <participant name="Collect_And_Extract_TTR" />
+            <output message="FileSystemInputMessage">
+               <assign to="Action">FS_EXTRACT</assign>
+               <assign to="extractionFolder">C:\Extract</assign>
+               <assign to="." from="*" />
+            </output>
+            <input message="inmsg">
+               <assign to="." from="*" />
+            </input>
+         </operation>
+         <choice name="repeat">
+            <select>
+               <case ref="hasMoreDocs" activity="repeatDoc" />
+            </select>
+            <sequence name="repeatDoc">
+               <repeat name="endLoop" ref="forSequence" />
+            </sequence>
+         </choice>
+      </sequence>
+      <assign to="." from="DOMToDoc(/ProcessData/status,'PrimaryDocument')" />
+      <operation name="DocKeywordReplace">
+         <participant name="MyDocKeywordReplace" />
+         <output message="outmsg">
+            <assign to="." from="*" />
+            <assign to="literal_mode">true</assign>
+            <assign to="literal_bufferSize">102400</assign>
+            <assign to="literal_readAheadSize">8192</assign>
+            <assign to="keyword1" from="string('&lt;![CDATA[')" />
+            <assign to="replace1" from="''" />
+            <assign to="keyword2" from="string(']]&gt;')" />
+            <assign to="replace2" from="''" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <operation name="SMTP Send Service">
+         <participant name="InternalSMTP" />
+         <output message="SMTP_SEND_SERVICEInputMessage">
+            <assign to="xport-smtp-mailfrom">fg_sysadmin@IISCLIENT-com.eidikointernal.com</assign>
+            <assign to="xport-smtp-mailsubject">File Transfer Report</assign>
+            <assign to="xport-smtp-mailto">eidiko@IISCLIENT-com.eidikointernal.com</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg" />
+      </operation>
+   </sequence>
+</process>

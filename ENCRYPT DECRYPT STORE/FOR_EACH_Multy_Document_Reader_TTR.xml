@@ -1,0 +1,93 @@
+<process name="Multy_Document_Reader_TTR">
+   <rule name="more_docs">
+      <condition>count(/ProcessData/RESULT/ROW) &gt; 0</condition>
+   </rule>
+   <rule name="more_split_docs">
+      <condition>DocExtract.DONE = 0</condition>
+   </rule>
+   <sequence name="venky">
+      <operation name="Lightweight JDBC Adapter">
+         <participant name="LightweightJDBCAdapterQuery" />
+         <output message="LightweightJDBCAdapterTypeInputMessage">
+            <assign to="pool">db2Pool</assign>
+            <assign to="query_type">SELECT</assign>
+            <assign to="result_name">RESULT</assign>
+            <assign to="row_name">ROW</assign>
+            <assign to="sql">SELECT * FROM EN_DOC_STORE WHERE SYM_ID !='NULL'</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <assign to="." from="DocToDOM(PrimaryDocument)" />
+      <sequence name="forSequence">
+         <operation name="For Each Document">
+            <participant name="ForEachDocument" />
+            <output message="ForEachDocumentTypeInputMessage">
+               <assign to="." from="*" />
+               <assign to="ITERATOR_NAME">DocExtract</assign>
+            </output>
+            <input message="inmsg">
+               <assign to="." from="*" />
+            </input>
+         </operation>
+         <choice name="test">
+            <select>
+               <case ref="more_split_docs" activity="executeSeq" />
+            </select>
+            <sequence name="executeSeq">
+               <assign to="SYM_ID" from="/ProcessData/RESULT/ROW[1]/SYM_ID/text()" />
+               <assign to="DOC_ID" from="/ProcessData/RESULT/ROW[1]/DOC_ID/text()" />
+               <assign to="DOCUMENT" from="/ProcessData/RESULT/ROW[1]/DOCUMENT/text()" />
+               <operation name="EBICS Encryption Service">
+                  <participant name="EBICSEncryptionService" />
+                  <output message="EBICSEncryptionServiceInputMessage">
+                     <assign to="." from="*" />
+                     <assign to="action">decrypt</assign>
+                     <assign to="CommSessionId">012345</assign>
+                     <assign to="TransactionId">01234</assign>
+                     <assign to="SymmetricKeyId" from="/ProcessData/SYM_ID/text()" />
+                     <assign to="WfId">venkyt.txt</assign>
+                  </output>
+                  <input message="inmsg">
+                     <assign to="." from="*" />
+                  </input>
+               </operation>
+               <operation name="File System Adapter">
+                  <participant name="fileSystem_VN" />
+                  <output message="FileSystemInputMessage">
+                     <assign to="." from="*" />
+                     <assign to="Action">FS_EXTRACT</assign>
+                     <assign to="extractionFolder">C:\Users\db2admin\Downloads\venkyDeript</assign>
+                  </output>
+                  <input message="inmsg">
+                     <assign to="." from="*" />
+                  </input>
+               </operation>
+               <operation name="Release Service">
+                  <participant name="ReleaseService" />
+                  <output message="ReleaseServiceTypeInputMessage">
+                     <assign to="." from="*" />
+                     <assign to="TARGET" from="'/ProcessData/RESULT/ROW[1]'" />
+                  </output>
+                  <input message="inmsg">
+                     <assign to="." from="*" />
+                  </input>
+               </operation>
+               <operation name="Release Service">
+                  <participant name="ReleaseService" />
+                  <output message="ReleaseServiceTypeInputMessage">
+                     <assign to="." from="*" />
+                     <assign to="TARGET">PrimaryDocument</assign>
+                  </output>
+                  <input message="inmsg">
+                     <assign to="." from="*" />
+                  </input>
+               </operation>
+               <repeat name="endLoop" ref="forSequence" />
+            </sequence>
+         </choice>
+      </sequence>
+   </sequence>
+</process>

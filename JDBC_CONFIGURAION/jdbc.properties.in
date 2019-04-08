@@ -1,0 +1,1884 @@
+## Licensed Materials - Property of IBM
+## (C)Copyright IBM Corp. [2010, 2011] All Rights Reserved.
+## US Government Users Restricted Rights - Use, duplication or disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+## PROPERTY_FILE_NAME
+## jdbc.properties.in (for initialization)
+## jdbc.properties (for operations)
+
+## PROPERTY_FILE_DESCRIPTION
+## Describes database resources used by the application. It also contains numerous queries used by the 
+## system when accessing a particular database.
+## This file should not be edited. Override property settings, if needed, using the 
+## customer_overrides.properties file. 
+## The jdbc.properties file has the same settings as the jdbc_customer.properties file. This allows 
+## you to separate your customized database pool information (in jdbc_customer.properties) from the 
+## pool information provided by Application (in jdbc.properties). For information about the 
+## properties in the jdbc_customer.properties file, refer to the documentation for the 
+## jdbc_customer.properties file.
+## You can use the jdbc_customer.properties file to add a new database pool to the application environment. 
+
+## DATABASE_SUPPORT: N
+
+## PROPERTY_START
+## PROPERTY_NAME: useTracking	
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Specifies whether to use debugging logs. 
+## Valid values: 
+## FULL : Logs information about which part of the code is using a particular database connection. 
+##        The tracking reports will contain stack traces showing what code requested a connection 
+##        from the pool. 
+##        This is useful for identifying database connection leaks and other connection-related 
+##        problems. If you suspect a connection leak, look at the stack traces to see what section 
+##        of code seems to be monopolizing the pool. 
+## LIGHTWEIGHT : (default) The same as FULL, except that stack traces are not maintained for each 
+##               connection, which improves performance. 
+## NONE : Do not use debugging logs. 
+## Note: This property has been replaced by the JDBC Monitor. Tracking enabled using the JDBC Monitor 
+## will automatically be reset to disabled if the application is restarted. This prevents performance 
+## degradation. The useTracking property can still be used for extended debugging without being reset 
+## each time the application is restarted. If you enable debugging with this property, remember to 
+## disable it when you are finished debugging.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: proxyLoggingEnabled	
+## PROPERTY_GROUP: SQL Proxy logging
+## PROPERTY_TYPE: Boolean
+## PROPERTY_DESCRIPTION
+## Specifies whether SQL Proxy is enabled.
+## This property helps in setting up the SQLProxy Logging for NoAppServer.
+## To enable SQL Proxy, do the following:
+## * Append jdbc:sci: to the start of the JDBC URLs. 
+##   For example, jdbc:mysql://<URL> becomes jdbc:sci:jdbc:mysql://<URL>.
+## * The .driver properties must be changed to com.yantra.jdbc.driver.SCIProxyDriver.
+##   For example, mysqlPool.driver=com.mysql.jdbc.Driver becomes 
+##   mysqlPool.driver=com.yantra.jdbc.driver.SCIProxyDriver
+## * Uncomment and set the following properties: proxyLoggingEnabled, proxySourceLogging, 
+##   proxyDriver, proxyLogDir  
+## Note: When you set up SQLProxy Logging using the SCIProxyDriver driver, make sure that
+## you do not enable the SQLProxy Logging by setting up the properties in the 
+## yfs.properties file (such as yfs.enable.proxy.sql.logging, yfs.enable.source.logging,
+## and yfs.proxy.log.dir).
+## Note: Third party application server users: This property must now be
+## used instead of the yfs.enable.proxy.sql.logging property in
+## yfs.properties.
+## Valid values: 
+## Y : (default) SQL Proxy is enabled. 
+## N : SQL Proxy is not enabled. 
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: proxySourceLogging  
+## PROPERTY_GROUP: SQL Proxy logging
+## PROPERTY_TYPE: Boolean
+## PROPERTY_DESCRIPTION
+## Used when enabling SQL Proxy. 
+## This property helps in setting up the SQLProxy Logging for NoAppServer.
+## Note: Third party application server users: This property must now be
+## used instead of the yfs.enable.source.logging property in
+## yfs.properties.
+## Valid values: 
+## Y : (default)
+## N :
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: proxyDriver  
+## PROPERTY_GROUP: SQL Proxy logging
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Your JDBC driver class. Used when enabling SQL Proxy.
+## This property helps in setting up the SQLProxy Logging for NoAppServer.
+## Example: proxyDriver=<Specify your JDBC Driver class>
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: proxyLogDir  
+## PROPERTY_GROUP: SQL Proxy logging
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## SQL Proxy log directory. Use [install_dir]/logs.
+## This property helps in setting up the SQLProxy Logging for NoAppServer.
+## If the NoAppServer is running in a Windows environment, use the directory delimiter
+## as "/" for the proxy log directory because only the UNIX delimiter ("/") will be
+## recognized.
+## Note: Third party application server users: This property must now be
+## used instead of the yfs.enable.source.logging property in
+## yfs.properties.
+## Example: proxyLogDir=/<install_dir>/logs
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: repersistDocumentTrackingExtensions  
+## PROPERTY_TYPE: Boolean
+## PROPERTY_DESCRIPTION
+## Specifies whether DocumentTrackingExtensions are repersisted when a document is cloned. This 
+## may result in a huge performance loss, so the default value is false. 
+## Valid values: 
+## true : Repersist DocumentTrackingExtensions. 
+## false : (default) Do not repersist DocumentTrackingExtensions.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: defaultDocumentStorageType  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Storage type for document objects constructed without a storageType property. 
+## Valid values: 
+## FS : Stores the document data on the local file system. 
+## DB : (default) Stores the document data in the database.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: max_stream_to_inmemory  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Maximum size of data that will be converted from stream to in-memory.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: connection_retry_delay  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## The time between connection retries in JDBCService.testOnReserve. 
+## Example: 100
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: max_stream_chunk_size_bytes  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Maximum amount of data to buffer in the stream object before sending the data to the database. 
+## Do not change this value. 
+## Example: 1024000
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: document_dir  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Directory used to store document payloads when document storage is set to file system. 
+## Example: [install_dir]/documents
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: RESTORE_DOCUMENT_DIR  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Default directory in which to store on-disk restored documents. 
+## Example: [install_dir]/restore_documents
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: properties_dir  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Location of the Properties directory for the application installation. 
+## Example: [install_dir]/properties
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: wrap_connection 
+## PROPERTY_TYPE: Boolean
+## PROPERTY_DESCRIPTION
+## Indicates whether to use ConnectionWrapper for all connections for better handling of transaction.
+## Valid values:
+## true : (default) Use ConnectionWrapper. 
+## false : Do not use ConnectionWrapper.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: document_dir_extension  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Document directory pattern extension. This allows you to organize files written to the document 
+## directory more efficiently by providing the date a document was written to the file system. 
+## Documents will be created in the following path: [document_dir]/translated-document_dir_extension. 
+## Leaving the pattern blank will result in storing documents directly in the [document_dir] directory. 
+## The value of document_dir_extension must be a pattern compliant with java.text.SimpleDateFormat as 
+## shown in the following examples: 
+## example 1 : Full year/month/day 
+##             The pattern extension yyyy/MMMM/DDDD will store documents in a
+##             directory similar to /[install_dir]/[document_dir]/2004/01/05. 
+## example 2 : Short-year/month/day 
+##             The pattern extension yy/MMMM/DDDD will store documents in a
+##             directory similar to /[install_dir]/[document_dir]/04/01/05. 
+## example 3 : Year-month-day-hour 
+##             The pattern extension yyyy-MMMM-DDDD-kk will store documents in a
+##             directory similar to /[install_dir]/[document_dir]/2004-01-05-16.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: max_docload_retry 
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Number of retries to load document by doc ID.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: wrapconnection 
+## PROPERTY_TYPE: Boolean
+## PROPERTY_DESCRIPTION
+##
+## Valid values:
+## true : (default)
+## false :
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: NEO.Connection.Class 
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Internal class used to help access your particular database. 
+## Example: com.sterlingcommerce.neo.db.GISConnection
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: query.isNull.[database] 
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Database-specific way of specifying a null parameter in a where clause. 
+## Examples:
+## query.isNull.db2=is null
+## query.isNull.informix=IS NULL
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: psWrapperImplemenation 
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Internal class used to help access your particular database. 
+## Example: com.sterlingcommerce.woodstock.util.frame.jdbc.JDBC3PreparedStatementWrapper
+## (For property value, see PROPERTY_VALUE_ALL section at end of file)
+## PROPERTY_END
+
+## The following properties relate to particular databases (as specified by [databasePool]). You can 
+## disable properties for a particular database by adding the following line to the 
+## customer_overrides.properties file:
+## [databasePool].disabled=true
+## Note: If invalid data (like ABC or 13.45) is entered in a pool setting, the setting uses its default 
+## value.
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].driver 	
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Driver to use when creating a database connection.
+## When you enable SQL proxy, this property must be changed to com.yantra.jdbc.driver.SCIProxyDriver. 
+## For example, you would change mysqlPool.driver=com.mysql.jdbc.Driver to 
+## mysqlPool.driver=com.yantra.jdbc.driver.SCIProxyDriver
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].url 	
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Database location. This is the full URL as defined by the Java JDBC standards.
+## For information about Java JDBC standards, go to http://java.sun.com. For the format of the JDBC 
+## URL, refer to your database vendor documentation or your JDBC driver documentation.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].user  
+## PROPERTY_TYPE: String 
+## PROPERTY_DESCRIPTION
+## User name for logging in to the database.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].password  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Password for logging in to the database.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].password.1
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Password which will be required for logging in to the database effective
+## from the date specified in the [databasePool].effective.1 property.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file)
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].effective.1
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## The date from which the password specified in the
+## [databasePool].password.1 property becomes effective for logging in
+## to the database. The effective date should be entered in the
+## YYYY-MM-DDThh:mm:ss format. For example: 2009-09-10T00:15:00
+## Note: If the effective date only contains YYYY-MM-DD, the system will
+## by default change the effective date to YYYY-MM-DDT00:00:00.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file)
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].storedProcClassName  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Internal class used to help access the particular database.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].maxconn  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+##
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].varDataClassname  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Internal class used to help access the particular database.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].catalog  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Specifies which database to use in a partitioned database environment.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].testOnReserve  
+## PROPERTY_TYPE: Boolean
+## PROPERTY_DESCRIPTION
+## Specifies whether the connection pooling software should test the database connection in the 
+## pool before allowing other parts of the software to use it. 
+## Valid values:
+## true : (default) Test the database connection and revive idle connections.
+## false : Do not test the database connection. Setting this property to false can improve the speed 
+##         of the application, however, it will not be as robust. There are more chances for business 
+##         processes to fail since the validity of the connection is not tested before a piece of 
+##         code tries to use it.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].testOnReserveQuery  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## SQL query used to test the database connection when [databasePool].testOnReserve is set to true. 
+## Select a table and column in your database to use in the test on reserve function. The column 
+## referenced in the query should be of the type varchar and should be at least five characters 
+## in length. This query must be executable by the [databasePool].username account and must be a 
+## valid SQL query. 
+## For example: SELECT table_name FROM user_tables WHERE table_name=? 
+## where ? must accept a string value. The query does not have to return a value to operate.
+## If this query can be executed successfully the connection is considered good and other parts 
+## of the connection pooling software will be allowed to use it. If the query fails, the
+## database connection is discarded and a new connection from the pool is tested, or if no  
+## connections remain in the pool, appropriate action is taken based on the behavior setting. 
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].testOnReserveInterval  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Minimum number of milliseconds between running testOnReserve instances on the same connection. 
+## The default value is 60000. 
+## Valid values:
+## No interval and current interval are used.
+## <=0 : No interval.
+##  >0 : The minimum number of milliseconds between running testOnReserve instances on the same 
+##       connection.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].maxRetries  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Controls the number of retries for getting a connection in each pool. Every pool can refer to 
+## a different retry number for testing its own connection. 
+## The default value is 100, if this property is not set.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].blobPageSize  
+## PROPERTY_TYPE: Integer 
+## PROPERTY_DESCRIPTION
+## Size of the BLOB to read when reading or writing it in chunks. Size of the chunk or buffer 
+## written to the database when writing BLOB or IMAGE data.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].compressBlob  
+## PROPERTY_TYPE: Boolean
+## PROPERTY_DESCRIPTION
+## Specifies whether the BLOB or IMAGE data is compressed before writing it to the database. This 
+## helps save space in the database at a small performance penalty. 
+## Valid values:
+## true: (default) Compress the data.
+## false: Do not compress the data.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].dbvendor  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Database vendor. 
+## For example, mysql, oracle, or db2.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].buffersize  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Number of extra connections that the connection pool can create above the value specified for 
+## [databasePool].maxsize to improve handling of unanticipated loads on the system. This property is 
+## only used if [databasePool].behaviour is set to 2.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].maxsize  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Maximum size of the database pool. This is the maximum number of database connections to keep 
+## in the pool.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].initsize  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Initial size of the database pool. This is the minimum number of database connections to keep 
+## in the pool.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].factory  
+## PROPERTY_TYPE: String 
+## PROPERTY_DESCRIPTION
+## Internal class used to help access the particular database. 
+## Always use the following value: 
+## com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].behaviour  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Specifies how a connection pool behaves when it runs out of connections. 
+## Valid values: 
+## 0 : The pool simply returns, indicating to the software to abort its current action and try again 
+##     later. 
+## 1 : The pool waits the length of time specified in [databasePool].waittime for a connection to be 
+##     returned before indicating to the software to abort and try again. 
+## 2 : The pool creates a buffered connection (a connection above the size specified in 
+##     [databasePool].maxsize). When using a setting of 2, the maximum number of connections for the 
+##     pool equals the value of [databasePool].maxsize plus the value of [databasePool].buffersize. 
+##     This allows connections to be created under heavy demand.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].lifespan  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Number of milliseconds a connection will live in a given pool before it needs to be removed. 
+## Valid values:
+## <=0 : (default) No timeout.
+##  >0 : Number of milliseconds that a connection stays in pool.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].idletimeout  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Number of milliseconds a connection can stay idle in a given pool before it needs to be removed.
+## The default value is 86400000. 
+## Valid values:
+## <=0 : No timeout.
+##  >0 : Number of milliseconds that a connection can stay idle in pool.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].housekeepinginterval  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Minimum number of milliseconds between running the housekeeping task to clean out idle connections. 
+## A valid value is any positive number. 
+## The default value is 3600000 milliseconds (1 hour).
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].waittime  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## Amount of time (in milliseconds) to wait for a connection to become available before telling the 
+## software to abort its current action and try again later. This is used if [databasePool].behaviour 
+## is set to 1.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].errorMissingTable  
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+##
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].transaction  
+## PROPERTY_TYPE
+## PROPERTY_DESCRIPTION
+## Specifies whether pool is transactional. A pool needs to have this property set to true to have 
+## a chance to participate in a distributed or other kind of transaction. 
+## Note: A database pool will automatically participate in a transaction if one already is started 
+## and exists. 
+## Valid values:
+## true : The pool has a chance to participate in the transaction.
+## false : (default) The pool will not participate in the transaction, even if a thread has a transaction.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].dbname  
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Used, by DB2 databases only, to determine which database to use.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].storagegroup  
+## PROPERTY_TYPE: String 
+## PROPERTY_DESCRIPTION
+##
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].max8177RetryCount
+## PROPERTY_TYPE: Integer
+## PROPERTY_DESCRIPTION
+## (Oracle only) Specifies how many times the software should retry if it receives an ORA-8177 error 
+## in certain situations.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].prop_[parameter]
+## PROPERTY_TYPE: Boolean
+## PROPERTY_DESCRIPTION
+## Provides information directly to a database driver (specified by [databasePool].driver).
+## Used with [databasePool].schema.
+## Example: oraclePool.prop_TCP.NODELAY=Yes
+## (For property value, see PROPERTY_VALUE_ALL section at end of file)
+## PROPERTY_END
+  
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].schema  
+## PROPERTY_TYPE: String 
+## PROPERTY_DESCRIPTION
+## Used when creating tables using Hibernate so that access is limited to a specific schema and not 
+## to the entire database. 
+## Used by Reporting Services when creating the Fact Model repositories using Hibernate.
+## The following database pools need this property:
+## * db2iSeriesPool.schema=&DB2ISERIES_DATA;
+## * oraclePool.schema=&ORA_USER; 
+## Note: &DB2ISERIES_DATA; and &ORA_USER; are variables used in the jdbc.properties.in file. These 
+## variables are replaced by the actual values in the jdbc.properties file during the munging process. 
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: [databasePool].type
+## PROPERTY_TYPE: String 
+## PROPERTY_DESCRIPTION
+## Database connection pooling software to use. 
+## Valid values:
+## local : Use the local database connection pooling software provided by the application. When using ASI 
+##         (noapp), only local applies.
+## remote : Use connection pooling software provided by a third party application server (such as 
+##          JBoss, WebLogic, or WebSphere).
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: query.[queryName].[database]
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## Format for the numerous query commands in the jdbc.properties file. [queryName] identifies the 
+## name of the query and [database] identifies the database. 
+## Examples:
+## query.mbxGetGenerationId.mysql=SELECT GENERATION FROM MBX_ROUTING_GNR8N FOR UPDATE
+## query.getStateAndStatus_ORDER_BY.oracle=ORDER BY START_TIME DESC, WORKFLOW_ID DESC
+## (For property value, see PROPERTY_VALUE_ALL section at end of file) 
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: useNewStateAndStatusLogic
+## PROPERTY_TYPE: Boolean
+## PROPERTY_DESCRIPTION
+##
+## Valid values:
+## true : (default)
+## false :
+## (For property value, see PROPERTY_VALUE_ALL section at end of file)
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: genericTestOnReserveQuery
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## The testOnReserveQuery to use if one is not specified for the pool.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file)
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: detect_leaked_connections
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## The property is used to track Database connection leak. By default, it is disabled. Set it to true to track connection
+## leak.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file)
+## PROPERTY_END
+
+## PROPERTY_START
+## PROPERTY_NAME: detect_leaked_statements_and_resultsets
+## PROPERTY_TYPE: String
+## PROPERTY_DESCRIPTION
+## The property is used to track statement and resultset leak. By default, it is disabled. Set it to true to track statement
+## and resultset leak.
+## (For property value, see PROPERTY_VALUE_ALL section at end of file)
+## PROPERTY_END
+
+## PROPERTY_VALUE_ALL
+#NEW #
+useTracking=LIGHTWEIGHT
+
+##  To enable SQL Proxy do the following:
+##  * Change all <pool>.driver properties below to com.yantra.jdbc.driver.SCIProxyDriver.  
+##    For example mysqlPool.driver=com.mysql.jdbc.Driver becomes mysqlPool.driver=com.yantra.jdbc.driver.SCIProxyDriver
+##  * Uncomment and set the following properties:
+##		proxyLoggingEnabled=Y
+##		proxySourceLogging=Y
+##		proxyLogDir=&LOG_DIR
+##  * Uncomment the proxyDriver property corresponding to the appropriate database vendor class
+##		proxyDriver=com.ibm.db2.jcc.DB2Driver
+##		proxyDriver=oracle.jdbc.OracleDriver
+##		proxyDriver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+##		proxyDriver=com.mysql.jdbc.Driver
+##	* Append jdbc:sci: to the start of the jdbc URLs. 
+##	  For example jdbc:mysql://<URL> becomes jdbc:sci:jdbc:mysql://<URL>.
+
+#DocumentTrackingExtensions are now able be repersisted when a document it cloned.  This may result in a huge performance loss, so it is set to false by default.  To enable this functionality, uncomment this property.
+#repersistDocumentTrackingExtensions=true
+
+# Default Document Storage Type
+# This is the storage type for Document objects constructed without
+# a storageType property.  FS tells the system to store the doc data on
+# the local file system.  DB tells the system to store the doc data in
+# the database.
+#defaultDocumentStorageType=FS
+defaultDocumentStorageType=DB
+
+# Maximum size of data that will be converted from stream to in-memory.
+max_stream_to_inmemory=10240000
+
+# Time between connection retries in JDBCService.testOnReserve.
+connection_retry_delay=100
+
+# Max size of data stored in-memory when reading/writing to/from a stream.
+max_stream_chunk_size_bytes=1024000
+# Default directory to store on-disk documents.
+#:ifdef DOC_PAYLOAD_DIR
+document_dir=&DOC_PAYLOAD_DIR;
+#:else
+document_dir=&INSTALL_DIR;/documents
+#:endif
+
+# Default directory to store on-disk restored documents 
+#:ifdef DOC_PAYLOAD_DIR
+RESTORE_DOCUMENT_DIR=&DOC_PAYLOAD_DIR;/restored
+#:else
+RESTORE_DOCUMENT_DIR=&INSTALL_DIR;/restore_documents 
+#:endif
+
+# Properties directory
+properties_dir=&PROP_DIR;
+
+# use ConnectionWrapper for all connections for better handling of Transaction
+wrap_connection=true
+
+# Document directory pattern extension (will create docs in 
+# document_dir/translated-document_dir_extension).  Leaving the
+# pattern blank will result in storing docs directly in document_dir.
+# The value of document_dir_extension should be a pattern
+# compliant with java.text.SimpleDateFormat as in the following
+#
+# full year/month/day --For example: July 10, 2005, would result as:
+# &INSTALL_DIR;/documents/2005/July/0191
+document_dir_extension=yyyy/MMMM/DDDD
+#Examples
+# short year/month/day --For example: July 10, 2005 would result as:
+# &INSTALL_DIR;/documents/05/July/0191
+#document_dir_extension=yy/MMMM/DDDD
+# year-month-day-hour -- For example: July 10, 2005 at 4:00 pm would result as:
+# &INSTALL_DIR;/documents/2005-July-0191-16
+#document_dir_extension=yyyy-MMMM-DDDD-kk
+
+#number of retry to load document by doc id
+max_docload_retry=10
+
+wrapconnection=true
+
+#NEO Connection Class
+NEO.Connection.Class=com.sterlingcommerce.neo.db.GISConnection
+
+#DB-specific ways to specify a null parameter in a where clause
+query.isNull.db2zOS=IS NULL
+query.isNull.db2iSeries=is null
+query.isNull.db2=is null
+query.isNull.mysql=is null
+query.isNull.mssql=is null
+query.isNull.oracle=is null
+query.isNull.informix=IS NULL
+
+psWrapperImplemenation=com.sterlingcommerce.woodstock.util.frame.jdbc.JDBC3PreparedStatementWrapper
+#:if DB_VENDOR DB2ZOS
+#:if JDBC_VENDOR DB2ZOS
+db2zOSPool.driver=com.ibm.db2.jcc.DB2Driver
+db2zOSPool.url=jdbc:db2://&DB2ZOS_HOST;:&DB2ZOS_PORT;/&DB2ZOS_LOCATION;
+#:else
+db2zOSPool.driver=com.ibm.db2.jcc.DB2Driver
+db2zOSPool.url=jdbc:db2://&DB2ZOS_HOST;:&DB2ZOS_PORT;/&DB2ZOS_LOCATION;
+#:endif
+db2zOSPool.dbname=&DB2ZOS_DATA;
+db2zOSPool.storagegroup=&DB2ZOS_STORAGEGROUP;
+db2zOSPool.user=&DB2ZOS_USER;
+db2zOSPool.password=&DB2ZOS_PASS;
+#db2zOSPool.maxconn=20;
+db2zOSPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2ZOSVarData
+db2zOSPool.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+db2zOSPool.catalog=&DB2ZOS_LOCATION;
+db2zOSPool.testOnReserve=true
+db2zOSPool.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+db2zOSPool.testOnReserveInterval=60000
+db2zOSPool.maxRetries=100
+db2zOSPool.blobPageSize=1024000
+db2zOSPool.compressBlob=true
+db2zOSPool.dbvendor=db2zos
+db2zOSPool.buffersize=500
+db2zOSPool.maxsize=&MAX_TRANS_POOL;
+db2zOSPool.initsize=&MIN_TRANS_POOL;
+db2zOSPool.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+db2zOSPool.behaviour=2
+db2zOSPool.lifespan=0
+db2zOSPool.idletimeout=86400000
+db2zOSPool.housekeepinginterval=3600000
+db2zOSPool.waittime=1000
+db2zOSPool.transaction=true
+db2zOSPool.systemPool=true
+
+#:if JDBC_VENDOR DB2ZOS
+db2zOSPool_local.driver=com.ibm.db2.jcc.DB2Driver
+db2zOSPool_local.url=jdbc:db2://&DB2ZOS_HOST;:&DB2ZOS_PORT;/&DB2ZOS_LOCATION;
+#:else
+db2zOSPool_local.driver=com.ibm.db2.jcc.DB2Driver
+db2zOSPool_local.url=jdbc:db2://&DB2ZOS_HOST;:&DB2ZOS_PORT;/&DB2ZOS_LOCATION;
+#:endif
+db2zOSPool_local.dbname=&DB2ZOS_DATA;
+db2zOSPool_local.storagegroup=&DB2ZOS_STORAGEGROUP;
+db2zOSPool_local.user=&DB2ZOS_USER;
+db2zOSPool_local.password=&DB2ZOS_PASS;
+#db2zOSPool_local.maxconn=20
+db2zOSPool_local.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2ZOSVarData
+db2zOSPool_local.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+db2zOSPool_local.catalog=&DB2ZOS_LOCATION;
+db2zOSPool_local.type=local
+db2zOSPool_local.transaction=false
+db2zOSPool_local.testOnReserve=true
+db2zOSPool_local.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+db2zOSPool_local.testOnReserveInterval=60000
+db2zOSPool_local.maxRetries=100
+db2zOSPool_local.blobPageSize=1024000
+db2zOSPool_local.compressBlob=true
+db2zOSPool_local.dbvendor=db2zos
+db2zOSPool_local.buffersize=500
+db2zOSPool_local.maxsize=&MAX_NONTRANS_POOL;
+##db2zOSPool_local.initsize=0
+db2zOSPool_local.initsize=&MIN_NONTRANS_POOL;
+db2zOSPool_local.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+db2zOSPool_local.behaviour=2
+db2zOSPool_local.lifespan=0
+db2zOSPool_local.idletimeout=86400000
+db2zOSPool_local.housekeepinginterval=3600000
+db2zOSPool_local.waittime=1000
+db2zOSPool_local.systemPool=true
+
+#:if JDBC_VENDOR DB2ZOS
+db2zOSPool_NoTrans.driver=com.ibm.db2.jcc.DB2Driver
+db2zOSPool_NoTrans.url=jdbc:db2://&DB2ZOS_HOST;:&DB2ZOS_PORT;/&DB2ZOS_LOCATION;
+#:else
+db2zOSPool_NoTrans.driver=com.ibm.db2.jcc.DB2Driver
+db2zOSPool_NoTrans.url=jdbc:db2://&DB2ZOS_HOST;:&DB2ZOS_PORT;/&DB2ZOS_LOCATION;
+#:endif
+db2zOSPool_NoTrans.dbname=&DB2ZOS_DATA;
+db2zOSPool_NoTrans.storagegroup=&DB2ZOS_STORAGEGROUP;
+db2zOSPool_NoTrans.user=&DB2ZOS_USER;
+db2zOSPool_NoTrans.password=&DB2ZOS_PASS;
+#Db2zOSPool_NoTrans.maxconn=20
+db2zOSPool_NoTrans.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2ZOSVarData
+db2zOSPool_NoTrans.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+db2zOSPool_NoTrans.catalog=&DB2ZOS_LOCATION;
+db2zOSPool_NoTrans.type=local
+db2zOSPool_NoTrans.transaction=false
+db2zOSPool_NoTrans.testOnReserve=true
+db2zOSPool_NoTrans.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+db2zOSPool_NoTrans.testOnReserveInterval=60000
+db2zOSPool_NoTrans.maxRetries=100
+db2zOSPool_NoTrans.blobPageSize=1024000
+db2zOSPool_NoTrans.compressBlob=true
+db2zOSPool_NoTrans.dbvendor=db2zos
+db2zOSPool_NoTrans.buffersize=500
+db2zOSPool_NoTrans.maxsize=&MAX_NONTRANS_POOL;
+db2zOSPool_NoTrans.initsize=&MIN_NONTRANS_POOL;
+db2zOSPool_NoTrans.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+db2zOSPool_NoTrans.behaviour=2
+db2zOSPool_NoTrans.lifespan=0
+db2zOSPool_NoTrans.idletimeout=86400000
+db2zOSPool_NoTrans.housekeepinginterval=3600000
+db2zOSPool_NoTrans.waittime=1000
+db2zOSPool_NoTrans.systemPool=true
+
+#
+# database specific settings for the escape keyword
+#
+query.escapeString.db2zOS = ESCAPE('\\')
+#
+# database specific settings for the maximum batch size
+# note: this is a workaround for the 3.0 release
+#
+query.maxBatchSize.db2zOS=-1
+#
+#:endif
+
+# ******************************************************************************************88
+
+#:ifdef DB2ISERIES
+#:if JDBC_VENDOR DB2APP
+db2iSeriesPool.driver=com.ibm.db2.jdbc.app.DB2Driver
+db2iSeriesPool.url=jdbc:db2://&DB2ISERIES_HOST;/&DB2ISERIES_DATA;
+db2iSeriesPool.catalog=&DB2ISERIES_CATALOG;
+db2iSeriesPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2ISeriesVarData
+#:endif
+#:if JDBC_VENDOR DB2TOOLBOX
+db2iSeriesPool.driver=com.ibm.as400.access.AS400JDBCDriver
+db2iSeriesPool.url=jdbc:as400://&DB2ISERIES_HOST;/&DB2ISERIES_DATA;;errors=full
+db2iSeriesPool.catalog=&DB2ISERIES_CATALOG;
+db2iSeriesPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2ISeriesVarData
+#:endif
+#:if JDBC_VENDOR DB2
+db2iSeriesPool.driver=COM.ibm.db2.jdbc.net.DB2Driver
+db2iSeriesPool.url=jdbc:db2://&DB2ISERIES_HOST;:&DB2ISERIES_PORT;/&DB2ISERIES_DATA;
+db2iSeriesPool.catalog=&DB2ISERIES_DATA;
+db2iSeriesPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2VarData
+#:endif
+db2iSeriesPool.dbname=&DB2ISERIES_DATA;
+db2iSeriesPool.user=&DB2ISERIES_USER;
+db2iSeriesPool.password=&DB2ISERIES_PASS;
+#db2iSeriesPool.maxconn=20;
+db2iSeriesPool.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+db2iSeriesPool.testOnReserve=true
+db2iSeriesPool.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+db2iSeriesPool.testOnReserveInterval=60000
+db2iSeriesPool.maxRetries=100
+db2iSeriesPool.blobPageSize=1024000
+db2iSeriesPool.compressBlob=true
+db2iSeriesPool.dbvendor=db2iSeries
+db2iSeriesPool.buffersize=500
+db2iSeriesPool.maxsize=&MAX_TRANS_POOL;
+db2iSeriesPool.initsize=&MIN_TRANS_POOL;
+db2iSeriesPool.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+db2iSeriesPool.behaviour=2
+db2iSeriesPool.lifespan=0
+db2iSeriesPool.idletimeout=86400000
+db2iSeriesPool.housekeepinginterval=3600000
+db2iSeriesPool.waittime=1000
+db2iSeriesPool.schema=&DB2ISERIES_DATA;
+db2iSeriesPool.transaction=true
+db2iSeriesPool.defaultIsolationLevel=1
+db2iSeriesPool.systemPool=true
+
+#:if JDBC_VENDOR DB2APP
+db2iSeriesPool_local.driver=com.ibm.db2.jdbc.app.DB2Driver
+db2iSeriesPool_local.url=jdbc:db2://&DB2ISERIES_HOST;/&DB2ISERIES_DATA;
+db2iSeriesPool_local.catalog=&DB2ISERIES_CATALOG;
+db2iSeriesPool_local.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2ISeriesVarData
+#:endif
+#:if JDBC_VENDOR DB2TOOLBOX
+db2iSeriesPool_local.driver=com.ibm.as400.access.AS400JDBCDriver
+db2iSeriesPool_local.url=jdbc:as400://&DB2ISERIES_HOST;/&DB2ISERIES_DATA;;errors=full
+db2iSeriesPool_local.catalog=&DB2ISERIES_CATALOG;
+db2iSeriesPool_local.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2ISeriesVarData
+#:endif
+#:if JDBC_VENDOR DB2
+db2iSeriesPool.driver=COM.ibm.db2.jdbc.net.DB2Driver
+db2iSeriesPool.url=jdbc:db2://&DB2ISERIES_HOST;:&DB2ISERIES_PORT;/&DB2ISERIES_DATA;
+db2iSeriesPool.catalog=&DB2ISERIES_DATA;
+db2iSeriesPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2VarData
+#:endif
+db2iSeriesPool_local.dbname=&DB2ISERIES_DATA;
+db2iSeriesPool_local.user=&DB2ISERIES_USER;
+db2iSeriesPool_local.password=&DB2ISERIES_PASS;
+#db2iSeriesPool_local.maxconn=20
+db2iSeriesPool_local.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+db2iSeriesPool_local.type=local
+db2iSeriesPool_local.transaction=false
+db2iSeriesPool_local.testOnReserve=true
+db2iSeriesPool_local.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+db2iSeriesPool_local.testOnReserveInterval=60000
+db2iSeriesPool_local.maxRetries=100
+db2iSeriesPool_local.blobPageSize=1024000
+db2iSeriesPool_local.compressBlob=true
+db2iSeriesPool_local.dbvendor=db2iSeries
+db2iSeriesPool_local.buffersize=500
+db2iSeriesPool_local.maxsize=&MAX_NONTRANS_POOL;
+#db2iSeriesPool_local.initsize=0
+db2iSeriesPool_local.initsize=&MIN_NONTRANS_POOL;
+db2iSeriesPool_local.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+db2iSeriesPool_local.behaviour=2
+db2iSeriesPool_local.lifespan=0
+db2iSeriesPool_local.idletimeout=86400000
+db2iSeriesPool_local.housekeepinginterval=3600000
+db2iSeriesPool_local.waittime=1000
+db2iSeriesPool_local.schema=&DB2ISERIES_DATA;
+db2iSeriesPool_local.defaultIsolationLevel=1
+db2iSeriesPool_local.systemPool=true
+
+#:if JDBC_VENDOR DB2
+db2iSeriesPool.driver=COM.ibm.db2.jdbc.net.DB2Driver
+db2iSeriesPool.url=jdbc:db2://&DB2ISERIES_HOST;:&DB2ISERIES_PORT;/&DB2ISERIES_DATA;
+db2iSeriesPool.catalog=&DB2ISERIES_DATA;
+db2iSeriesPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2VarData
+#:endif
+
+#:if JDBC_VENDOR DB2APP
+db2iSeriesPool_NoTrans.driver=com.ibm.db2.jdbc.app.DB2Driver
+db2iSeriesPool_NoTrans.url=jdbc:db2://&DB2ISERIES_HOST;/&DB2ISERIES_DATA;
+db2iSeriesPool_NoTrans.catalog=&DB2ISERIES_CATALOG;
+db2iSeriesPool_NoTrans.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2ISeriesVarData
+#:endif
+#:if JDBC_VENDOR DB2TOOLBOX
+db2iSeriesPool_NoTrans.driver=com.ibm.as400.access.AS400JDBCDriver
+db2iSeriesPool_NoTrans.url=jdbc:as400://&DB2ISERIES_HOST;/&DB2ISERIES_DATA;;errors=full
+db2iSeriesPool_NoTrans.catalog=&DB2ISERIES_CATALOG;
+db2iSeriesPool_NoTrans.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2ISeriesVarData
+#:endif
+#:if JDBC_VENDOR DB2
+db2iSeriesPool.driver=COM.ibm.db2.jdbc.net.DB2Driver
+db2iSeriesPool.url=jdbc:db2://&DB2ISERIES_HOST;:&DB2ISERIES_PORT;/&DB2ISERIES_DATA;
+db2iSeriesPool.catalog=&DB2ISERIES_DATA;
+db2iSeriesPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2VarData
+#:endif
+db2iSeriesPool_NoTrans.dbname=&DB2ISERIES_DATA;
+db2iSeriesPool_NoTrans.user=&DB2ISERIES_USER;
+db2iSeriesPool_NoTrans.password=&DB2ISERIES_PASS;
+#db2iSeriesPool_NoTrans.maxconn=20
+db2iSeriesPool_NoTrans.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+db2iSeriesPool_NoTrans.type=local
+db2iSeriesPool_NoTrans.transaction=false
+db2iSeriesPool_NoTrans.testOnReserve=true
+db2iSeriesPool_NoTrans.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+db2iSeriesPool_NoTrans.testOnReserveInterval=60000
+db2iSeriesPool_NoTrans.maxRetries=100
+db2iSeriesPool_NoTrans.blobPageSize=1024000
+db2iSeriesPool_NoTrans.compressBlob=true
+db2iSeriesPool_NoTrans.dbvendor=db2iSeries
+db2iSeriesPool_NoTrans.buffersize=500
+db2iSeriesPool_NoTrans.maxsize=&MAX_NONTRANS_POOL;
+db2iSeriesPool_NoTrans.initsize=&MIN_NONTRANS_POOL;
+db2iSeriesPool_NoTrans.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+db2iSeriesPool_NoTrans.behaviour=2
+db2iSeriesPool_NoTrans.lifespan=0
+db2iSeriesPool_NoTrans.idletimeout=86400000
+db2iSeriesPool_NoTrans.housekeepinginterval=3600000
+db2iSeriesPool_NoTrans.waittime=1000
+db2iSeriesPool_NoTrans.schema=&DB2ISERIES_DATA;
+db2iSeriesPool_NoTrans.defaultIsolationLevel=1
+db2iSeriesPool_NoTrans.systemPool=true
+
+#
+# database specific settings for the escape keyword
+#
+query.escapeString.db2iSeries = ESCAPE('\\')
+#
+# database specific settings for the maximum batch size
+# note: this is a workaround for the 3.0 release
+#
+query.maxBatchSize.db2iSeries=-1
+#:endif
+
+# **************************************************************************************************
+
+#:if DB_VENDOR DB2ZOS
+#:else
+#:ifdef DB2
+#:ifdef USE_DB2_TYPE3
+db2Pool.driver=COM.ibm.db2.jdbc.net.DB2Driver
+#:else
+db2Pool.driver=com.ibm.db2.jcc.DB2Driver
+#:endif
+db2Pool.url=jdbc:db2://&DB2_HOST;:&DB2_PORT;/&DB2_DATA;
+db2Pool.catalog=&DB2_DATA;
+db2Pool.dbname=&DB2_DATA;
+db2Pool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2VarData
+db2Pool.user=&DB2_USER;
+db2Pool.password=&DB2_PASS;
+#db2Pool.maxconn=20;
+#:ifdef DB_SCHEMA_OWNER
+db2Pool.schema=&DB_SCHEMA_OWNER;
+#:else
+db2Pool.schema=&DB2_USER;
+#:endif
+db2Pool.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+db2Pool.testOnReserve=true
+db2Pool.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+db2Pool.testOnReserveInterval=60000
+db2Pool.maxRetries=100
+db2Pool.blobPageSize=1024000
+db2Pool.compressBlob=true
+useNewStateAndStatusLogic=true
+#:ifdef JBOSS
+#db2Pool.cacheps=true
+#:endif
+#:ifdef NOAPP
+#db2Pool.cacheps=true
+#:endif
+db2Pool.dbvendor=db2
+db2Pool.buffersize=500
+db2Pool.maxsize=&MAX_TRANS_POOL;
+db2Pool.initsize=&MIN_TRANS_POOL;
+db2Pool.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+db2Pool.behaviour=2
+db2Pool.lifespan=0
+db2Pool.idletimeout=86400000
+db2Pool.housekeepinginterval=3600000
+db2Pool.waittime=1000
+db2Pool.errorMissingTable=-204
+db2Pool.transaction=true
+db2Pool.defaultIsolationLevel=2
+db2Pool.systemPool=true
+
+#:ifdef USE_DB2_TYPE3
+db2Pool_local.driver=COM.ibm.db2.jdbc.net.DB2Driver
+#:else
+db2Pool_local.driver=com.ibm.db2.jcc.DB2Driver
+#:endif
+db2Pool_local.url=jdbc:db2://&DB2_HOST;:&DB2_PORT;/&DB2_DATA;
+db2Pool_local.catalog=&DB2_DATA;
+db2Pool_local.dbname=&DB2_DATA;
+db2Pool_local.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2VarData
+db2Pool_local.user=&DB2_USER;
+db2Pool_local.password=&DB2_PASS;
+#db2Pool_local.maxconn=20
+#:ifdef DB_SCHEMA_OWNER
+db2Pool_local.schema=&DB_SCHEMA_OWNER;
+#:else
+db2Pool_local.schema=&DB2_USER;
+#:endif
+db2Pool_local.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+db2Pool_local.type=local
+db2Pool_local.transaction=false
+db2Pool_local.testOnReserve=true
+db2Pool_local.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+db2Pool_local.testOnReserveInterval=60000
+db2Pool_local.maxRetries=100
+db2Pool_local.blobPageSize=1024000
+db2Pool_local.compressBlob=true
+db2Pool_local.dbvendor=db2
+db2Pool_local.buffersize=500
+db2Pool_local.maxsize=&MAX_NONTRANS_POOL;
+#db2Pool_local.initsize=0
+db2Pool_local.initsize=&MIN_NONTRANS_POOL;
+db2Pool_local.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+db2Pool_local.behaviour=2
+db2Pool_local.lifespan=0
+db2Pool_local.idletimeout=86400000
+db2Pool_local.housekeepinginterval=3600000
+db2Pool_local.waittime=1000
+db2Pool_local.errorMissingTable=-204
+db2Pool_local.defaultIsolationLevel=2
+db2Pool_local.systemPool=true
+
+#:ifdef USE_DB2_TYPE3
+db2Pool_NoTrans.driver=COM.ibm.db2.jdbc.net.DB2Driver
+#:else
+db2Pool_NoTrans.driver=com.ibm.db2.jcc.DB2Driver
+#:endif
+db2Pool_NoTrans.url=jdbc:db2://&DB2_HOST;:&DB2_PORT;/&DB2_DATA;
+db2Pool_NoTrans.catalog=&DB2_DATA;
+db2Pool_NoTrans.dbname=&DB2_DATA;
+db2Pool_NoTrans.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.DB2VarData
+db2Pool_NoTrans.user=&DB2_USER;
+db2Pool_NoTrans.password=&DB2_PASS;
+#db2Pool_NoTrans.maxconn=20
+#:ifdef DB_SCHEMA_OWNER
+db2Pool_NoTrans.schema=&DB_SCHEMA_OWNER;
+#:else
+db2Pool_NoTrans.schema=&DB2_USER;
+#:endif
+db2Pool_NoTrans.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+db2Pool_NoTrans.type=local
+db2Pool_NoTrans.transaction=false
+db2Pool_NoTrans.testOnReserve=true
+db2Pool_NoTrans.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+db2Pool_NoTrans.testOnReserveInterval=60000
+db2Pool_NoTrans.maxRetries=100
+db2Pool_NoTrans.blobPageSize=1024000
+db2Pool_NoTrans.compressBlob=true
+db2Pool_NoTrans.dbvendor=db2
+db2Pool_NoTrans.buffersize=500
+db2Pool_NoTrans.maxsize=&MAX_NONTRANS_POOL;
+db2Pool_NoTrans.initsize=&MIN_NONTRANS_POOL;
+db2Pool_NoTrans.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+db2Pool_NoTrans.behaviour=2
+db2Pool_NoTrans.lifespan=0
+db2Pool_NoTrans.idletimeout=86400000
+db2Pool_NoTrans.housekeepinginterval=3600000
+db2Pool_NoTrans.waittime=1000
+db2Pool_NoTrans.errorMissingTable=-204
+db2Pool_NoTrans.defaultIsolationLevel=2
+db2Pool_NoTrans.systemPool=true
+
+#
+# database specific settings for the escape keyword
+#
+query.escapeString.db2 = ESCAPE('\\')
+#
+# database specific settings for the maximum batch size
+# note: this is a workaround for the 3.0 release
+#
+query.maxBatchSize.db2=-1
+#:endif
+#:endif
+
+# ********************************************************************************************
+
+#:ifdef MYSQL
+mysqlPool.driver=com.mysql.jdbc.Driver
+
+#:ifdef INTERNAL_MYSQL
+#:if INTERNAL_MYSQL false
+mysqlPool.url=jdbc:mysql://&DB_HOST;:&DB_PORT;/&DB_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+mysqlPool.user=&DB_USER;
+mysqlPool.password=&DB_PASS;
+#:else
+mysqlPool.url=jdbc:mysql://&MYSQL_HOST;:&MYSQL_PORT;/&MYSQL_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+mysqlPool.user=&MYSQL_USER;
+mysqlPool.password=&MYSQL_PASS;
+#:endif
+#:else
+mysqlPool.url=jdbc:mysql://&MYSQL_HOST;:&MYSQL_PORT;/&MYSQL_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+
+
+mysqlPool.user=&MYSQL_USER;
+mysqlPool.password=&MYSQL_PASS;
+#:endif
+
+#mysqlPool.maxconn=20
+#mysqlPool.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+mysqlPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.MySQLVarData
+mysqlPool.catalog=&MYSQL_DATA;
+mysqlPool.testOnReserve=true
+mysqlPool.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+mysqlPool.testOnReserveInterval=60000
+mysqlPool.maxRetries=100
+mysqlPool.blobPageSize=1024000
+mysqlPool.compressBlob=true
+mysqlPool.dbvendor=mysql
+mysqlPool.buffersize=500
+mysqlPool.maxsize=&MAX_TRANS_POOL;
+mysqlPool.initsize=&MIN_TRANS_POOL;
+mysqlPool.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+mysqlPool.behaviour=2
+mysqlPool.lifespan=0
+mysqlPool.idletimeout=86400000
+mysqlPool.housekeepinginterval=3600000
+mysqlPool.waittime=1000
+mysqlPool.errorMissingTable=1146
+mysqlPool.transaction=true
+mysqlPool.defaultIsolationLevel=2
+mysqlPool.systemPool=true
+
+mysqlPool_local.driver=com.mysql.jdbc.Driver
+
+#:ifdef INTERNAL_MYSQL
+#:if INTERNAL_MYSQL false
+mysqlPool_local.url=jdbc:mysql://&DB_HOST;:&DB_PORT;/&DB_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+mysqlPool_local.user=&DB_USER;
+mysqlPool_local.password=&DB_PASS;
+#:else
+mysqlPool_local.url=jdbc:mysql://&MYSQL_HOST;:&MYSQL_PORT;/&MYSQL_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+mysqlPool_local.user=&MYSQL_USER;
+mysqlPool_local.password=&MYSQL_PASS;
+#:endif
+#:else
+mysqlPool_local.url=jdbc:mysql://&MYSQL_HOST;:&MYSQL_PORT;/&MYSQL_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+
+mysqlPool_local.user=&MYSQL_USER;
+mysqlPool_local.password=&MYSQL_PASS;
+
+#:endif
+
+
+#mysqlPool_local.maxconn=20
+#mysqlPool.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+mysqlPool_local.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.MySQLVarData
+mysqlPool_local.catalog=&MYSQL_DATA;
+mysqlPool_local.type=local
+mysqlPool_local.transaction=false
+mysqlPool_local.testOnReserve=true
+mysqlPool_local.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+mysqlPool_local.testOnReserveInterval=60000
+mysqlPool_local.maxRetries=100
+mysqlPool_local.blobPageSize=1024000
+mysqlPool_local.compressBlob=true
+mysqlPool_local.dbvendor=mysql
+mysqlPool_local.buffersize=500
+mysqlPool_local.maxsize=&MAX_NONTRANS_POOL;
+#mysqlPool_local.initsize=0
+mysqlPool_local.initsize=&MIN_NONTRANS_POOL;
+mysqlPool_local.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+mysqlPool_local.behaviour=2
+mysqlPool_local.lifespan=0
+mysqlPool_local.idletimeout=86400000
+mysqlPool_local.housekeepinginterval=3600000
+mysqlPool_local.waittime=1000
+mysqlPool_local.errorMissingTable=1146
+mysqlPool_local.systemPool=true
+
+mysqlPool_NoTrans.driver=com.mysql.jdbc.Driver
+
+#:ifdef INTERNAL_MYSQL
+#:if INTERNAL_MYSQL false
+mysqlPool_NoTrans.url=jdbc:mysql://&DB_HOST;:&DB_PORT;/&DB_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+mysqlPool_NoTrans.user=&DB_USER;
+mysqlPool_NoTrans.password=&DB_PASS;
+#:else
+mysqlPool_NoTrans.url=jdbc:mysql://&MYSQL_HOST;:&MYSQL_PORT;/&MYSQL_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+mysqlPool_NoTrans.user=&MYSQL_USER;
+mysqlPool_NoTrans.password=&MYSQL_PASS;
+#:endif
+#:else
+mysqlPool_NoTrans.url=jdbc:mysql://&MYSQL_HOST;:&MYSQL_PORT;/&MYSQL_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+
+mysqlPool_NoTrans.user=&MYSQL_USER;
+mysqlPool_NoTrans.password=&MYSQL_PASS;
+
+#:endif
+
+
+#mysqlPool_NoTrans.maxconn=20
+#mysqlPool.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+mysqlPool_NoTrans.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.MySQLVarData
+mysqlPool_NoTrans.catalog=&MYSQL_DATA;
+mysqlPool_NoTrans.type=local
+mysqlPool_NoTrans.transaction=false
+mysqlPool_NoTrans.testOnReserve=true
+mysqlPool_NoTrans.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+mysqlPool_NoTrans.testOnReserveInterval=60000
+mysqlPool_NoTrans.maxRetries=100
+mysqlPool_NoTrans.blobPageSize=1024000
+mysqlPool_NoTrans.compressBlob=true
+mysqlPool_NoTrans.dbvendor=mysql
+mysqlPool_NoTrans.buffersize=500
+mysqlPool_NoTrans.maxsize=&MAX_NONTRANS_POOL;
+mysqlPool_NoTrans.initsize=&MIN_NONTRANS_POOL;
+mysqlPool_NoTrans.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+mysqlPool_NoTrans.behaviour=2
+mysqlPool_NoTrans.lifespan=0
+mysqlPool_NoTrans.idletimeout=86400000
+mysqlPool_NoTrans.housekeepinginterval=3600000
+mysqlPool_NoTrans.waittime=1000
+mysqlPool_NoTrans.errorMissingTable=1146
+mysqlPool_NoTrans.systemPool=true
+
+mysqlPool_Select.driver=com.mysql.jdbc.Driver
+
+#:ifdef INTERNAL_MYSQL
+#:if INTERNAL_MYSQL false
+mysqlPool_Select.url=jdbc:mysql://&DB_HOST;:&DB_PORT;/&DB_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+mysqlPool_Select.user=&DB_USER;
+mysqlPool_Select.password=&DB_PASS;
+#:else
+mysqlPool_Select.url=jdbc:mysql://&MYSQL_HOST;:&MYSQL_PORT;/&MYSQL_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+
+mysqlPool_Select.user=&MYSQL_USER;
+mysqlPool_Select.password=&MYSQL_PASS;
+
+#:endif
+#:else
+mysqlPool_Select.url=jdbc:mysql://&MYSQL_HOST;:&MYSQL_PORT;/&MYSQL_DATA;?useUnicode=true&characterEncoding=UTF-8&useOldAliasMetadataBehavior=true&useCursorFetch=true&defaultFetchSize=1024
+mysqlPool_Select.user=&MYSQL_USER;
+mysqlPool_Select.password=&MYSQL_PASS;
+#:endif
+
+#mysqlPool_Select.maxconn=20
+#mysqlPool.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+mysqlPool_Select.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.MySQLVarData
+mysqlPool_Select.catalog=&MYSQL_DATA;
+mysqlPool_Select.type=local
+mysqlPool_Select.transaction=false
+mysqlPool_Select.testOnReserve=true
+mysqlPool_Select.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+mysqlPool_Select.testOnReserveInterval=60000
+mysqlPool_Select.maxRetries=100
+mysqlPool_Select.blobPageSize=1024000
+mysqlPool_Select.compressBlob=true
+mysqlPool_Select.dbvendor=mysql
+mysqlPool_Select.buffersize=500
+mysqlPool_Select.maxsize=20
+mysqlPool_Select.initsize=0
+mysqlPool_Select.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+mysqlPool_Select.behaviour=2
+mysqlPool_Select.lifespan=0
+mysqlPool_Select.idletimeout=86400000
+mysqlPool_Select.housekeepinginterval=3600000
+mysqlPool_Select.waittime=1000
+mysqlPool_Select.errorMissingTable=1146
+mysqlPool_Select.systemPool=true
+
+#
+# database specific settings for the escape keyword
+# it is blank for the mysql
+#
+query.escapeString.mysql =
+#
+# database specific settings for the maximum batch size
+# note: this is a workaround for the 3.0 release
+#
+query.maxBatchSize.mysql=-1
+#:endif
+
+# ***********************************************************************
+
+#:ifdef ORACLE
+useNewStateAndStatusLogic=true
+oraclePool.driver=oracle.jdbc.OracleDriver
+#:ifdef ORACLE_JDBC_URL
+oraclePool.url=&ORACLE_JDBC_URL;
+#:else
+oraclePool.url=jdbc:oracle:thin:@&ORA_HOST;:&ORA_PORT;:&ORA_DATA;
+#:endif
+oraclePool.user=&ORA_USER;
+oraclePool.password=&ORA_PASS;
+oraclePool.prop_TCP.NODELAY=YES
+#oraclePool.maxconn=20
+oraclePool.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.OracleNoAppStoredProcQuery
+#:ifdef ORACLE_USE_BLOB
+oraclePool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.OracleBlobVarData
+#:else
+oraclePool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.OracleVarData
+#:endif
+oraclePool.catalog=&ORA_DATA;
+#:ifdef DB_SCHEMA_OWNER
+oraclePool.schema=&DB_SCHEMA_OWNER;
+#:else
+oraclePool.schema=&ORA_USER;
+#:endif
+oraclePool.type=remote
+oraclePool.testOnReserve=true
+oraclePool.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+oraclePool.testOnReserveInterval=60000
+oraclePool.maxRetries=100
+oraclePool.blobPageSize=1024000
+oraclePool.compressBlob=true
+oraclePool.max8177RetryCount=-1
+#:if DB_VENDOR Oracle8i
+oraclePool.dbvendor=oracle8i
+#:endif
+#:if DB_VENDOR Oracle9i
+oraclePool.dbvendor=oracle9i
+#:endif
+#:if DB_VENDOR Oracle10g
+oraclePool.dbvendor=oracle10g
+#:endif
+#:if DB_VENDOR Oracle
+oraclePool.dbvendor=oracle
+#:endif
+
+oraclePool.buffersize=500
+oraclePool.maxsize=&MAX_TRANS_POOL;
+oraclePool.initsize=&MIN_TRANS_POOL;
+oraclePool.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+oraclePool.behaviour=2
+oraclePool.lifespan=0
+oraclePool.idletimeout=86400000
+oraclePool.housekeepinginterval=3600000
+oraclePool.waittime=1000
+oraclePool.errorMissingTable=942
+oraclePool.transaction=true
+oraclePool.systemPool=true
+
+oraclePool_local.driver=oracle.jdbc.OracleDriver
+#:ifdef ORACLE_JDBC_URL
+oraclePool_local.url=&ORACLE_JDBC_URL;
+#:else
+oraclePool_local.url=jdbc:oracle:thin:@&ORA_HOST;:&ORA_PORT;:&ORA_DATA;
+#:endif
+oraclePool_local.user=&ORA_USER;
+oraclePool_local.password=&ORA_PASS;
+oraclePool_local.prop_TCP.NODELAY=YES
+oraclePool_local.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.OracleNoAppStoredProcQuery
+#oraclePool_local.maxconn=20
+#:ifdef ORACLE_USE_BLOB
+oraclePool_local.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.OracleBlobVarData
+#:else
+oraclePool_local.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.OracleVarData
+#:endif
+oraclePool_local.catalog=&ORA_DATA;
+#:ifdef DB_SCHEMA_OWNER
+oraclePool_local.schema=&DB_SCHEMA_OWNER;
+#:else
+oraclePool_local.schema=&ORA_USER;
+#:endif
+oraclePool_local.type=local
+oraclePool_local.transaction=false
+oraclePool_local.testOnReserve=true
+oraclePool_local.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+oraclePool_local.testOnReserveInterval=60000
+oraclePool_local.maxRetries=100
+oraclePool_local.blobPageSize=1024000
+oraclePool_local.compressBlob=true
+oraclePool_local.max8177RetryCount=-1
+#:if DB_VENDOR Oracle8i
+oraclePool_local.dbvendor=oracle8i
+#:endif
+#:if DB_VENDOR Oracle9i
+oraclePool_local.dbvendor=oracle9i
+#:endif
+#:if DB_VENDOR Oracle10g
+oraclePool_local.dbvendor=oracle10g
+#:endif
+#:if DB_VENDOR Oracle
+oraclePool_local.dbvendor=oracle
+#:endif
+
+oraclePool_local.buffersize=500
+oraclePool_local.maxsize=&MAX_NONTRANS_POOL;
+#oraclePool_local.initsize=0
+oraclePool_local.initsize=&MIN_NONTRANS_POOL;
+oraclePool_local.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+oraclePool_local.behaviour=2
+oraclePool_local.lifespan=0
+oraclePool_local.idletimeout=86400000
+oraclePool_local.housekeepinginterval=3600000
+oraclePool_local.waittime=1000
+oraclePool_local.errorMissingTable=942
+oraclePool_local.systemPool=true
+
+oraclePool_NoTrans.driver=oracle.jdbc.OracleDriver
+#:ifdef ORACLE_JDBC_URL
+oraclePool_NoTrans.url=&ORACLE_JDBC_URL;
+#:else
+oraclePool_NoTrans.url=jdbc:oracle:thin:@&ORA_HOST;:&ORA_PORT;:&ORA_DATA;
+#:endif
+oraclePool_NoTrans.user=&ORA_USER;
+oraclePool_NoTrans.password=&ORA_PASS;
+oraclePool_NoTrans.prop_TCP.NODELAY=YES
+oraclePool_NoTrans.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.OracleNoAppStoredProcQuery
+#oraclePool_NoTrans.maxconn=20
+#:ifdef ORACLE_USE_BLOB
+oraclePool_NoTrans.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.OracleBlobVarData
+#:else
+oraclePool_NoTrans.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.OracleVarData
+#:endif
+oraclePool_NoTrans.catalog=&ORA_DATA;
+#:ifdef DB_SCHEMA_OWNER
+oraclePool_NoTrans.schema=&DB_SCHEMA_OWNER;
+#:else
+oraclePool_NoTrans.schema=&ORA_USER;
+#:endif
+oraclePool_NoTrans.type=local
+oraclePool_NoTrans.transaction=false
+oraclePool_NoTrans.testOnReserve=true
+oraclePool_NoTrans.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+oraclePool_NoTrans.testOnReserveInterval=60000
+oraclePool_NoTrans.maxRetries=100
+oraclePool_NoTrans.blobPageSize=1024000
+oraclePool_NoTrans.compressBlob=true
+oraclePool_NoTrans.max8177RetryCount=-1
+#:if DB_VENDOR Oracle8i
+oraclePool_NoTrans.dbvendor=oracle8i
+#:endif
+#:if DB_VENDOR Oracle9i
+oraclePool_NoTrans.dbvendor=oracle9i
+#:endif
+#:if DB_VENDOR Oracle10g
+oraclePool_NoTrans.dbvendor=oracle10g
+#:endif
+#:if DB_VENDOR Oracle
+oraclePool_NoTrans.dbvendor=oracle
+#:endif
+
+oraclePool_NoTrans.buffersize=500
+oraclePool_NoTrans.maxsize=&MAX_NONTRANS_POOL;
+oraclePool_NoTrans.initsize=&MIN_NONTRANS_POOL;
+oraclePool_NoTrans.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+oraclePool_NoTrans.behaviour=2
+oraclePool_NoTrans.lifespan=0
+oraclePool_NoTrans.idletimeout=86400000
+oraclePool_NoTrans.housekeepinginterval=3600000
+oraclePool_NoTrans.waittime=1000
+oraclePool_NoTrans.errorMissingTable=942
+oraclePool_NoTrans.systemPool=true
+
+#
+# database specific settings for the escape keyword
+#
+query.escapeString.oracle = ESCAPE('\\')
+#
+# database specific settings for the maximum batch size
+# note: this is a workaround for the 3.0 release
+#
+query.maxBatchSize.oracle=16384
+#:endif
+
+# **************************************************************************************************
+
+#:ifdef MSSQL
+mssqlPool.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+#:ifdef MSSQL_JDBC_URL
+mssqlPool.url=&MSSQL_JDBC_URL;
+#:else
+mssqlPool.url=jdbc:sqlserver://&MSSQL_HOST;:&MSSQL_PORT;;databaseName=&MSSQL_DATA;;SelectMethod=cursor
+#:endif
+mssqlPool.user=&MSSQL_USER;
+mssqlPool.password=&MSSQL_PASS;
+#mssqlPool.maxconn=20
+mssqlPool.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+mssqlPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.MSSQLVarData
+mssqlPool.catalog=&MSSQL_DATA;
+mssqlPool.type=remote
+mssqlPool.transaction=true
+mssqlPool.testOnReserve=true
+mssqlPool.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+mssqlPool.testOnReserveInterval=60000
+mssqlPool.maxRetries=100
+mssqlPool.blobPageSize=1024000
+mssqlPool.compressBlob=true
+mssqlPool.dbvendor=mssql
+mssqlPool.buffersize=500
+mssqlPool.maxsize=&MAX_TRANS_POOL;
+mssqlPool.initsize=&MIN_TRANS_POOL;
+mssqlPool.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+mssqlPool.behaviour=2
+mssqlPool.lifespan=0
+mssqlPool.idletimeout=86400000
+mssqlPool.housekeepinginterval=3600000
+mssqlPool.waittime=1000
+mssqlPool.errorMissingTable=16945
+mssqlPool.systemPool=true
+useNewStateAndStatusLogic=true
+useMSSQLConvert=true
+
+mssqlPool_local.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+#:ifdef MSSQL_JDBC_URL
+mssqlPool_local.url=&MSSQL_JDBC_URL;
+#:else
+mssqlPool_local.url=jdbc:sqlserver://&MSSQL_HOST;:&MSSQL_PORT;;databaseName=&MSSQL_DATA;;SelectMethod=cursor
+#:endif
+mssqlPool_local.user=&MSSQL_USER;
+mssqlPool_local.password=&MSSQL_PASS;
+#mssqlPool_local.maxconn=20
+mssqlPool_local.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+mssqlPool_local.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.MSSQLVarData
+mssqlPool_local.catalog=&MSSQL_DATA;
+mssqlPool_local.type=local
+mssqlPool_local.transaction=false
+mssqlPool_local.testOnReserve=true
+mssqlPool_local.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+mssqlPool_local.testOnReserveInterval=60000
+mssqlPool_local.maxRetries=100
+mssqlPool_local.blobPageSize=1024000
+mssqlPool_local.compressBlob=true
+mssqlPool_local.dbvendor=mssql
+mssqlPool_local.buffersize=500
+mssqlPool_local.maxsize=&MAX_NONTRANS_POOL;
+#mssqlPool_local.initsize=0
+mssqlPool_local.initsize=&MIN_NONTRANS_POOL;
+mssqlPool_local.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+mssqlPool_local.behaviour=2
+mssqlPool_local.lifespan=0
+mssqlPool_local.idletimeout=86400000
+mssqlPool_local.housekeepinginterval=3600000
+mssqlPool_local.waittime=1000
+mssqlPool_local.errorMissingTable=16945
+mssqlPool_local.systemPool=true
+
+mssqlPool_NoTrans.driver=com.microsoft.sqlserver.jdbc.SQLServerDriver
+#:ifdef MSSQL_JDBC_URL
+mssqlPool_NoTrans.url=&MSSQL_JDBC_URL;
+#:else
+mssqlPool_NoTrans.url=jdbc:sqlserver://&MSSQL_HOST;:&MSSQL_PORT;;databaseName=&MSSQL_DATA;;SelectMethod=cursor
+#:endif
+mssqlPool_NoTrans.user=&MSSQL_USER;
+mssqlPool_NoTrans.password=&MSSQL_PASS;
+#mssqlPool_NoTrans.maxconn=20
+mssqlPool_NoTrans.storedProcClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.SybaseStoredProcQuery
+mssqlPool_NoTrans.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.MSSQLVarData
+mssqlPool_NoTrans.catalog=&MSSQL_DATA;
+mssqlPool_NoTrans.type=local
+mssqlPool_NoTrans.transaction=false
+mssqlPool_NoTrans.testOnReserve=true
+mssqlPool_NoTrans.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+mssqlPool_NoTrans.testOnReserveInterval=60000
+mssqlPool_NoTrans.maxRetries=100
+mssqlPool_NoTrans.blobPageSize=1024000
+mssqlPool_NoTrans.compressBlob=true
+mssqlPool_NoTrans.dbvendor=mssql
+mssqlPool_NoTrans.buffersize=500
+mssqlPool_NoTrans.maxsize=&MAX_NONTRANS_POOL;
+mssqlPool_NoTrans.initsize=&MIN_NONTRANS_POOL;
+mssqlPool_NoTrans.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+mssqlPool_NoTrans.behaviour=2
+mssqlPool_NoTrans.lifespan=0
+mssqlPool_NoTrans.idletimeout=86400000
+mssqlPool_NoTrans.housekeepinginterval=3600000
+mssqlPool_NoTrans.waittime=1000
+mssqlPool_NoTrans.errorMissingTable=16945
+mssqlPool_NoTrans.systemPool=true
+#
+# database specific settings for the escape keyword
+#
+query.escapeString.mssql = ESCAPE('\\')
+#
+# database specific settings for the maximum batch size
+# note: this is a workaround for the 3.0 release
+#
+query.maxBatchSize.mssql=-1
+
+#:endif
+
+# copyBlob queries.
+query.copyBlob.mysql=INSERT INTO VARIABLE_DESTTABLE_VARIABLE (DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE) SELECT DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE FROM VARIABLE_SRCTABLE_VARIABLE WHERE DATA_ID in ( VARIABLE_DATAIDS_VARIABLE )
+query.copyBlob.mssql=INSERT INTO VARIABLE_DESTTABLE_VARIABLE (DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE) SELECT DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE FROM VARIABLE_SRCTABLE_VARIABLE WHERE DATA_ID in ( VARIABLE_DATAIDS_VARIABLE )
+query.copyBlob.db2=INSERT INTO VARIABLE_DESTTABLE_VARIABLE (DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE) SELECT DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE FROM VARIABLE_SRCTABLE_VARIABLE WHERE DATA_ID in ( VARIABLE_DATAIDS_VARIABLE )
+query.copyBlob.db2iSeries=INSERT INTO VARIABLE_DESTTABLE_VARIABLE (DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE) SELECT DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE FROM VARIABLE_SRCTABLE_VARIABLE WHERE DATA_ID in ( VARIABLE_DATAIDS_VARIABLE )
+query.copyBlob.db2zOS=INSERT INTO VARIABLE_DESTTABLE_VARIABLE (DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE) SELECT DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE FROM VARIABLE_SRCTABLE_VARIABLE WHERE DATA_ID in ( VARIABLE_DATAIDS_VARIABLE )
+# oracle cannot copy LONGNUMBERs.  need this icky stuff.
+query.copyBlob.oracle=declare cursor cs_dataoff is SELECT DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE FROM VARIABLE_SRCTABLE_VARIABLE WHERE DATA_ID in ( VARIABLE_DATAIDS_VARIABLE ); vdataid VARIABLE_SRCTABLE_VARIABLE.data_id%type; vpageindex VARIABLE_SRCTABLE_VARIABLE.page_index%type; vdata_type VARIABLE_SRCTABLE_VARIABLE.data_type%type; vdataobject VARIABLE_SRCTABLE_VARIABLE.data_object%type; vwfid VARIABLE_SRCTABLE_VARIABLE.wf_id%type; vreferencetable VARIABLE_SRCTABLE_VARIABLE.referece_table%type; begin open cs_dataoff; loop fetch cs_dataoff into vdataid, vpageindex, vdata_type, vdataobject, vwfid, vreferencetable; exit when cs_dataoff%notfound; INSERT INTO VARIABLE_DESTTABLE_VARIABLE (DATA_ID, PAGE_INDEX, DATA_TYPE, DATA_OBJECT, WF_ID, REFERENCE_TABLE) values (vdataid, vpageindex, vdata_type, vdataobject, vwfid, vreferencetable); end loop; end;
+
+#
+#:includeifexists &PROP_DIR;/jdbcworkflow_doc.properties
+#
+##include
+#:includeifexists &PROP_DIR;/jdbc_purge.properties
+#:includeifexists &PROP_DIR;/jdbc_archive.properties
+#:includeifexists &PROP_DIR;/jdbc_index.properties
+#:includeifexists &PROP_DIR;/associateBPsToDoc.properties
+# Include the backup service queries
+#:includeifexists &PROP_DIR;/backup_queries.properties.in
+
+#:ifdef INFORMIX
+informixPool.behaviour=2
+informixPool.lifespan=0
+informixPool.idletimeout=86400000
+informixPool.housekeepinginterval=3600000
+informixPool.blobPageSize=1024000
+informixPool.buffersize=500
+informixPool.catalog=&INFORMIX_DATA;
+informixPool.compressBlob=true
+useNewStateAndStatusLogic=true
+informixPool.dbvendor=informix
+informixPool.driver=com.informix.jdbc.IfxDriver
+informixPool.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+informixPool.initsize=&MIN_TRANS_POOL;
+informixPool.maxconn=20
+informixPool.maxsize=&MAX_TRANS_POOL;
+informixPool.password=&INFORMIX_PASS;
+informixPool.testOnReserve=true
+informixPool.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+informixPool.testOnReserveInterval=60000
+informixPool.maxRetries=100
+informixPool.url=jdbc:informix-sqli://&INFORMIX_HOST;:&INFORMIX_PORT;/&INFORMIX_DATA;:INFORMIXSERVER=&INFORMIX_SERVER;
+informixPool.user=&INFORMIX_USER;
+informixPool.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.InformixVarData
+informixPool.waittime=1000
+informixPool.errorMissingTable=-206
+informixPool.transaction=true
+informixPool.systemPool=true
+
+informixPool_NoTrans.behaviour=2
+informixPool_NoTrans.lifespan=0
+informixPool_NoTrans.idletimeout=86400000
+informixPool_NoTrans.housekeepinginterval=3600000
+informixPool_NoTrans.blobPageSize=1024000
+informixPool_NoTrans.buffersize=500
+informixPool_NoTrans.catalog=&INFORMIX_DATA;
+informixPool_NoTrans.compressBlob=true
+informixPool_NoTrans.dbvendor=informix
+informixPool_NoTrans.driver=com.informix.jdbc.IfxDriver
+informixPool_NoTrans.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+informixPool_NoTrans.initsize=&MIN_NONTRANS_POOL;
+informixPool_NoTrans.maxconn=20
+informixPool_NoTrans.maxsize=&MAX_NONTRANS_POOL;
+informixPool_NoTrans.password=&INFORMIX_PASS;
+informixPool_NoTrans.testOnReserve=true
+informixPool_NoTrans.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+informixPool_NoTrans.testOnReserveInterval=60000
+informixPool_NoTrans.maxRetries=100
+informixPool_NoTrans.type=local
+informixPool_NoTrans.url=jdbc:informix-sqli://&INFORMIX_HOST;:&INFORMIX_PORT;/&INFORMIX_DATA;:INFORMIXSERVER=&INFORMIX_SERVER;
+informixPool_NoTrans.user=&INFORMIX_USER;
+informixPool_NoTrans.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.InformixVarData
+informixPool_NoTrans.waittime=1000
+informixPool_NoTrans.errorMissingTable=-206
+informixPool_NoTrans.transaction=false
+informixPool_NoTrans.systemPool=true
+
+informixPool_Select.behaviour=2
+informixPool_Select.lifespan=0
+informixPool_Select.idletimeout=86400000
+informixPool_Select.housekeepinginterval=3600000
+informixPool_Select.blobPageSize=1024000
+informixPool_Select.buffersize=500
+informixPool_Select.catalog=&INFORMIX_DATA;
+informixPool_Select.compressBlob=true
+informixPool_Select.dbvendor=informix
+informixPool_Select.driver=com.informix.jdbc.IfxDriver
+informixPool_Select.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+informixPool_Select.initsize=0
+informixPool_Select.maxconn=20
+informixPool_Select.maxsize=20
+informixPool_Select.password=&INFORMIX_PASS;
+informixPool_Select.testOnReserve=true
+informixPool_Select.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL  = ?
+informixPool_Select.testOnReserveInterval=60000
+informixPool_Select.maxRetries=100
+informixPool_Select.type=local
+informixPool_Select.url=jdbc:informix-sqli://&INFORMIX_HOST;:&INFORMIX_PORT;/&INFORMIX_DATA;:INFORMIXSERVER=&INFORMIX_SERVER;
+informixPool_Select.user=&INFORMIX_USER;
+informixPool_Select.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.InformixVarData
+informixPool_Select.waittime=1000
+informixPool_Select.errorMissingTable=-206
+informixPool_Select.transaction=false
+informixPool_Select.systemPool=true
+
+informixPool_local.behaviour=2
+informixPool_local.lifespan=0
+informixPool_local.idletimeout=86400000
+informixPool_local.housekeepinginterval=3600000
+informixPool_local.blobPageSize=1024000
+informixPool_local.buffersize=500
+informixPool_local.catalog=&INFORMIX_DATA;
+informixPool_local.compressBlob=true
+informixPool_local.dbvendor=informix
+informixPool_local.driver=com.informix.jdbc.IfxDriver
+informixPool_local.factory=com.sterlingcommerce.woodstock.util.frame.jdbc.ConnectionFactory
+informixPool_local.initsize=&MIN_NONTRANS_POOL;
+informixPool_local.maxconn=20
+informixPool_local.maxsize=&MAX_NONTRANS_POOL;
+informixPool_local.password=&INFORMIX_PASS;
+informixPool_local.testOnReserve=true
+informixPool_local.testOnReserveQuery=SELECT PRODUCT_LABEL from SI_VERSION where PRODUCT_LABEL = ?
+informixPool_local.testOnReserveInterval=60000
+informixPool_local.maxRetries=100
+informixPool_local.type=local
+informixPool_local.url=jdbc:informix-sqli://&INFORMIX_HOST;:&INFORMIX_PORT;/&INFORMIX_DATA;:INFORMIXSERVER=&INFORMIX_SERVER;
+informixPool_local.user=&INFORMIX_USER;
+informixPool_local.varDataClassName=com.sterlingcommerce.woodstock.util.frame.jdbc.InformixVarData
+informixPool_local.waittime=1000
+informixPool_local.errorMissingTable=-206
+informixPool_local.transaction=false
+informixPool_local.systemPool=true
+
+#:includeifexists &PROP_DIR;/jdbc_informix.properties
+
+#:endif
+
+# The testOnReserveQuery to use if one is not specified for the pool.
+#:ifdef MYSQL
+genericTestOnReserveQuery=SELECT 1 from DUAL
+#:endif
+#:ifdef MSSQL
+genericTestOnReserveQuery=SELECT 1
+#:endif
+#:ifdef DB2
+genericTestOnReserveQuery=SELECT 1 from SYSIBM.SYSDUMMY1
+#:endif
+#:ifdef ORACLE
+genericTestOnReserveQuery=SELECT 1 from DUAL
+#:endif
+
+
+# Used by upgrade PostServiceInstall in GIS clump
+query.upgrade.truncate.SI_VERSION.* = TRUNCATE TABLE SI_VERSION
+query.upgrade.truncate.SI_VERSION.db2 = DELETE FROM SI_VERSION
+query.upgrade.truncate.SI_VERSION.db2iSeries = DELETE FROM SI_VERSION
+query.upgrade.truncate.SI_VERSION.db2zos = DELETE FROM SI_VERSION
+
+query.upgrade.update.yfs.resource.permission.* = UPDATE YFS_RESOURCE_PERMISSION SET RESOURCE_KEY =? WHERE RESOURCE_KEY = (SELECT RESOURCE_KEY FROM YFS_RESOURCE where RESOURCE_ID=?)
+
+query.upgrade.delete.yfs.resource.* = DELETE FROM YFS_RESOURCE where RESOURCE_ID =?
+
+#this flag is for support team to use
+#:includewildcard &PROP_DIR;/jdbc.properties_*_ext
+openTranDebug=false
+
+# property to check Database connection leak
+detect_leaked_connections=false
+
+# property to check statement and resultset leak
+detect_leaked_statements_and_resultsets=false
+
+ # Java getCanonicalPath can show a performance hit mounted drives.
+ # Add jdbc.properties:getAbsolutePath parameter to use Java getAbsolutePath()
+ # when creating documents under FS storage.
+ # Default (false) uses getCanonicalPath. True uses getAbsolutePath
+ getAbsolutePath = false
+
+# Default directory to store on-disk customizations
+#:ifdef CUSTOMIZATION_STORAGE_DIR
+customization_storage_location=&CUSTOMIZATION_STORAGE_DIR;
+#:else
+customization_storage_location=&INSTALL_DIR;/customizations
+#:endif

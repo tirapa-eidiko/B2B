@@ -1,0 +1,31 @@
+//Setting commandlane environment
+db2cmd -i -w db2setcp
+// List out all Databases
+db2 list db directory
+db2 connect to B2B user db2admin
+
+db2 list tablespaces show detail
+db2 list tables
+db2 terminate
+
+SELECT  * FROM DB2ADMIN.TRANSACTION
+
+db2 SELECT * FROM DATA_TABLE  FETCH FIRST 1 ROWS ONLY
+
+db2 create table DB2ADMIN.TRANSACTION(T_ID integer not null, STATUS varchar(100), STARTED_BY varchar(100),T_TYPE varchar(100));
+db2 insert into DB2ADMIN.TRANSACTION values(1,'SUCCESS','TIRAPA','CREDIT')    
+db2 insert into DB2ADMIN.TRANSACTION values(2,'SUCCESS','TIRAPA','CREDIT')    
+db2 insert into DB2ADMIN.TRANSACTION values(3,'SUCCESS','TIRAPA','CREDIT')    
+db2 insert into DB2ADMIN.TRANSACTION values(4,'SUCCESS','TIRAPA','CREDIT')    
+db2 insert into DB2ADMIN.TRANSACTION values(5,'SUCCESS','TIRAPA','CREDIT')    
+db2 insert into DB2ADMIN.TRANSACTION values(6,'SUCCESS','TIRAPA','CREDIT')    
+db2 insert into DB2ADMIN.TRANSACTION values(7,'FAIL','SIVA','CREDIT')    
+
+
+
+
+db2 CREATE TABLE CUSTOM_DOCUMENT_BLOB(DOCUMENT_ID VARCHAR(100), DOCUMENT_NAME VARCHAR(100), DOCUMENTB BLOB, DOCUMENTB_TYPE VARCHAR(100))
+
+db2 CREATE TABLE CUSTOM_DOCUMENT_CLOB(DOCUMENT_ID VARCHAR(100), DOCUMENT_NAME VARCHAR(100), DOCUMENTB CLOB, DOCUMENTB_TYPE VARCHAR(100))
+
+insert into CUSTOM_DOCUMENT values ( ?, ?, CONVERT(VARBINARY(max), ?)

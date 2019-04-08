@@ -1,0 +1,62 @@
+<process name = "SINGLE_SOURCE_MULTY_DESTINATION_TTR"> 
+  <sequence name="Sequence Start">
+    <!-- Collect Date from Source-->
+	 <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_COLLECT</assign>
+            <assign to="bootstrap">false</assign>
+            <assign to="collectionFolder">C:\Single-Source</assign>
+            <assign to="collectMultiple">false</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+
+    <all>
+      <!-- Extract Date To Destination-1-->
+	 <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_EXTRACT</assign>
+            <assign to="extractionFolder">C:\Destination-1</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+
+      <!-- Extract Date To Destination-2-->
+	 <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_EXTRACT</assign>
+            <assign to="extractionFolder">C:\Destination-2</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+	  
+	  
+	    <!-- Extract Date To Destination-3-->
+	 <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_EXTRACT</assign>
+            <assign to="extractionFolder">C:\Destination-3</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+
+    </all>
+  </sequence>
+</process>
+

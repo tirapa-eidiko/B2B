@@ -1,0 +1,89 @@
+
+<process name="Mail_Box_TO_Folder_Multyple_Messages">
+
+   <rule name="more_docs">
+      <condition>count(/ProcessData/Message) &gt; 0</condition>
+   </rule>
+   
+   <sequence>
+   
+      <operation name="Mailbox Query Service">
+         <participant name="MailboxQuery" />
+         <output message="MailboxQueryServiceTypeInputMessage">
+            <assign to="." from="*" />
+            <assign to="MailboxPath">/</assign>
+            <assign to="UseGlobalMailboxes">false</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+	  
+	  
+      <sequence name="forSequence">
+	  
+         <choice name="test">
+		 
+            <select>
+               <case ref="more_docs" activity="PutSeq" />
+            </select>
+			
+            <sequence name="PutSeq">
+               
+               <operation name="Mailbox Extract Begin Service">
+                  <participant name="MailboxExtractBegin" />
+                  <output message="MailboxExtractBeginServiceTypeInputMessage">
+				  <assign to="." from="*" />
+                     <assign to="CommitNow">yes</assign>
+                     <assign to="MessageId" from="/ProcessData/Message[1]/MessageId/text()" />
+                     
+                  </output>
+                  <input message="inmsg">
+                     <assign to="." from="*" />
+                  </input>
+               </operation>
+			   
+			   
+               <operation name="File System Adapter">
+                  <participant name="fileSystem_VN" />
+                  <output message="FileSystemInputMessage">
+                     <assign to="." from="*" />
+                     <assign to="Action">FS_EXTRACT</assign>
+                     <assign to="extractionFolder">C:\Users\db2admin\Downloads\venkyDeript</assign>
+                  </output>
+                  <input message="inmsg">
+                     <assign to="." from="*" />
+                  </input>
+               </operation>
+			   
+			   
+               <operation name="Release Service">
+                  <participant name="ReleaseService" />
+                  <output message="ReleaseServiceTypeInputMessage">
+                     <assign to="." from="*" />
+                     <assign to="TARGET" from="'/ProcessData/Message[1]'" />
+                  </output>
+                  <input message="inmsg">
+                     <assign to="." from="*" />
+                  </input>
+               </operation>
+			   
+			   
+               <operation name="Release Service">
+                  <participant name="ReleaseService" />
+                  <output message="ReleaseServiceTypeInputMessage">
+                     <assign to="." from="*" />
+                     <assign to="TARGET">PrimaryDocument</assign>
+                  </output>
+                  <input message="inmsg">
+                     <assign to="." from="*" />
+                  </input>
+               </operation>
+			   
+               
+               <repeat name="endLoop" ref="forSequence" />
+            </sequence>
+         </choice>
+      </sequence>
+   </sequence>
+</process>

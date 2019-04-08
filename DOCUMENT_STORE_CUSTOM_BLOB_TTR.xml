@@ -1,0 +1,39 @@
+<process name="DOCUMENT_STORE_CUSTOM_BLOB_TTR">
+   <sequence name="Sequence Start">
+      <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_COLLECT</assign>
+            <assign to="bootstrap">false</assign>
+            <assign to="collectionFolder">C:\DataBase</assign>
+            <assign to="collectMultiple">false</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="Status_Rpt('status')" />
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <operation name="Lightweight JDBC Adapter">
+         <participant name="LIGHTWEIGHT_JDBC_ADAPTER_BLOB_CLOB_TTR" />
+         <output message="LightweightJDBCAdapterTypeInputMessage">
+            <assign to="." from="*" />
+            <assign to="param1" from="/ProcessData/FileName/text()" />
+            <assign to="param2" from="/ProcessData/FileName/text()" />
+            <assign to="param4" from="/ProcessData/FileName/text()" />
+            <assign to="paramtype1">String</assign>
+            <assign to="paramtype2">String</assign>
+            <assign to="paramtype4">String</assign>
+            <assign to="paramtype3">BinaryStreamFromDocument</assign>
+            <assign to="pool">db2Pool</assign>
+            <assign to="query_type">INSERT</assign>
+            <assign to="result_name">RESULT</assign>
+            <assign to="row_name">ROW</assign>
+            <assign to="sql">INSERT INTO CUSTOM_DOCUMENT_BLOB VALUES (?,?,?,?)</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+   </sequence>
+</process>

@@ -1,0 +1,28 @@
+<process name="Collect_And_Extract_TTR">
+   <sequence name="Sequence Start">
+      <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_COLLECT</assign>
+            <assign to="bootstrap">false</assign>
+            <assign to="collectionFolder">C:\Collect</assign>
+            <assign to="collectMultiple">false</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_EXTRACT</assign>
+            <assign to="extractionFolder">C:\Extract</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+   </sequence>
+</process>

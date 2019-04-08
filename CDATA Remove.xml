@@ -1,0 +1,82 @@
+ <process name="Collect_And_Extract_TTR">
+<sequence name="Sequence Start">
+<operation name="File System Adapter">
+<participant name="Collect_And_Extract_TTR"/>
+<output message="FileSystemInputMessage">
+<assign to="Action">FS_COLLECT</assign>
+<assign to="bootstrap">false</assign>
+<assign to="collectionFolder">C:\Collect</assign>
+<assign to="collectMultiple">false</assign>
+<assign to="." from="*"></assign>
+</output>
+<input message="inmsg">
+<assign to="." from="Status_Rpt('status')"></assign>
+<assign to="." from="*"></assign>
+</input>
+</operation>
+
+<operation name="File System Adapter">
+<participant name="Collect_And_Extract_TTR"/>
+<output message="FileSystemInputMessage">
+<assign to="Action">FS_EXTRACT</assign>
+<assign to="extractionFolder">C:\Extract</assign>
+<assign to="." from="*"></assign>
+</output>
+<input message="inmsg">
+<assign to="." from="*"></assign>
+</input>
+</operation>
+
+<operation name="SMTP Send Service">
+        <participant name="InternalSMTP"/>
+        <output message="SMTP_SEND_SERVICEInputMessage">
+          <assign to="xport-smtp-mailfrom">fg_sysadmin@IISCLIENT-com.eidikointernal.com</assign>
+          <assign to="xport-smtp-mailsubject" from="/ProcessData/FileName/text()"></assign>
+          <assign to="xport-smtp-mailto">eidiko@IISCLIENT-com.eidikointernal.com</assign>
+          <assign to="." from="*"></assign>
+        </output>
+        <input message="inmsg">
+        </input>
+      </operation>
+
+<onFault>
+         <sequence>
+		 
+		 <assign to="." from="DOMToDoc(/ProcessData,'PrimaryDocument')"></assign>
+
+
+
+<operation name="DocKeywordReplace">
+<participant name="MyDocKeywordReplace"/>
+<output message="outmsg">
+<assign to="." from="*"></assign>
+<assign to="literal_mode">true</assign>
+<assign to="literal_bufferSize">102400</assign>
+<assign to="literal_readAheadSize">8192</assign>
+<assign to="keyword1" from="string('&lt;![CDATA[')"></assign>
+<assign to="replace1" from="''"></assign>
+<assign to="keyword2" from="string(']]&gt;')"></assign>
+<assign to="replace2" from="''"></assign>
+</output>
+<input message="inmsg">
+<assign to="." from="*"></assign>
+</input>
+</operation>
+         <operation name="SMTP Send Service">
+        <participant name="InternalSMTP"/>
+        <output message="SMTP_SEND_SERVICEInputMessage">
+          <assign to="xport-smtp-mailfrom">fg_sysadmin@IISCLIENT-com.eidikointernal.com</assign>
+          <assign to="xport-smtp-mailsubject" from="string(status/text())"></assign>
+          <assign to="xport-smtp-mailto">eidiko@IISCLIENT-com.eidikointernal.com</assign>
+          <assign to="." from="*"></assign>
+        </output>
+        <input message="inmsg">
+        </input>
+      </operation>
+         </sequence>
+      </onFault>
+
+
+
+</sequence>
+</process>

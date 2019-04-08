@@ -1,0 +1,94 @@
+<process name="FILE_TRANSFER_BY_EXTENSION_TTR">
+   <rule name="xmlFile">
+      <condition>substring-after(/ProcessData/FileName/text(),'.')='xml'</condition>
+   </rule>
+   <rule name="javaFile">
+      <condition>substring-after(/ProcessData/FileName/text(),'.')='java'</condition>
+   </rule>
+   <rule name="textFile">
+      <condition>substring-after(/ProcessData/FileName/text(),'.')='txt'</condition>
+   </rule>
+    <rule name="datFile">
+      <condition>substring-after(/ProcessData/FileName/text(),'.')='dat'</condition>
+   </rule>
+   <sequence>
+      <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_COLLECT</assign>
+            <assign to="bootstrap">false</assign>
+            <assign to="collectionFolder">C:\Source</assign>
+            <assign to="collectMultiple">false</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <choice>
+         <select>
+            <case ref="xmlFile" activity="xmlAction" />
+            <case ref="javaFile" activity="javaAction" />
+            <case ref="textFile" activity="textAction" />
+			<case ref="datFile" activity="datAction" />
+         </select>
+         <sequence name="xmlAction">
+            <assign to="Result">XML FILE</assign>
+            <operation name="File System Adapter">
+               <participant name="Collect_And_Extract_TTR" />
+               <output message="FileSystemInputMessage">
+                  <assign to="Action">FS_EXTRACT</assign>
+                  <assign to="extractionFolder">C:\Xml</assign>
+                  <assign to="." from="*" />
+               </output>
+               <input message="inmsg">
+                  <assign to="." from="*" />
+               </input>
+            </operation>
+         </sequence>
+         <sequence name="javaAction">
+            <assign to="Result">JAVA FILE</assign>
+            <operation name="File System Adapter">
+               <participant name="Collect_And_Extract_TTR" />
+               <output message="FileSystemInputMessage">
+                  <assign to="Action">FS_EXTRACT</assign>
+                  <assign to="extractionFolder">C:\Java</assign>
+                  <assign to="." from="*" />
+               </output>
+               <input message="inmsg">
+                  <assign to="." from="*" />
+               </input>
+            </operation>
+         </sequence>
+         <sequence name="textAction">
+            <assign to="Result">TEXT FILE</assign>
+            <operation name="File System Adapter">
+               <participant name="Collect_And_Extract_TTR" />
+               <output message="FileSystemInputMessage">
+                  <assign to="Action">FS_EXTRACT</assign>
+                  <assign to="extractionFolder">C:\Txt</assign>
+                  <assign to="." from="*" />
+               </output>
+               <input message="inmsg">
+                  <assign to="." from="*" />
+               </input>
+            </operation>
+         </sequence>
+		 
+		  <sequence name="datAction">
+            <assign to="Result">DAT FILE</assign>
+            <operation name="File System Adapter">
+               <participant name="Collect_And_Extract_TTR" />
+               <output message="FileSystemInputMessage">
+                  <assign to="Action">FS_EXTRACT</assign>
+                  <assign to="extractionFolder">C:\Dat</assign>
+                  <assign to="." from="*" />
+               </output>
+               <input message="inmsg">
+                  <assign to="." from="*" />
+               </input>
+            </operation>
+         </sequence>
+      </choice>
+   </sequence>
+</process>

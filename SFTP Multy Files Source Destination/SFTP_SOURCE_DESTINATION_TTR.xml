@@ -1,0 +1,106 @@
+<process name="SFTP_SOURCE_DESTINATION_TTR">
+   <rule name="more_docs">
+      <condition>/ProcessData/fd.DONE/text() = '0'</condition>
+   </rule>
+   <sequence name="Sequence Start">
+      <operation name="SFTP Client Begin Session Service">
+         <participant name="SFTPClientBeginSession" />
+         <output message="SFTPClientBeginSessionServiceTypeInputMessage">
+            <assign to="." from="*" />
+            <assign to="KnownHostKeyId">2423651697aa4ffe5node1</assign>
+            <assign to="PreferredAuthenticationMethod">password</assign>
+            <assign to="RemoteHost">192.168.2.189</assign>
+            <assign to="RemotePasswd">sarasu10</assign>
+            <assign to="RemotePort">22</assign>
+            <assign to="RemoteUserId">bandaru</assign>
+            <assign to="SFTPClientAdapter">SFTPClientAdapter</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <operation name="SFTP Client CD Service">
+         <participant name="SFTPClientCd" />
+         <output message="SFTPClientCdServiceTypeInputMessage">
+            <assign to="." from="*" />
+            <assign to="Directory">/home/bandaru/Source</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <operation name="SFTP Client GET Service">
+         <participant name="SFTPClientGet" />
+         <output message="SFTPClientGetServiceTypeInputMessage">
+            <assign to="." from="*" />
+            <assign to="RemoteFilePattern">*.txt</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <sequence name="forSequence">
+         <operation name="For Each Document">
+            <participant name="ForEachDocument" />
+            <output message="ForEachDocumentTypeInputMessage">
+               <assign to="." from="*" />
+               <!-- <assign to="DOCUMENT_NAME_PREFIX">fsa</assign>-->
+               <assign to="ITERATOR_NAME">fd</assign>
+            </output>
+            <input message="inmsg">
+               <assign to="." from="*" />
+            </input>
+         </operation>
+         <assign name="Assign" to="test" from="/ProcessData/DocumentList/DocumentId/text()" />
+         <operation name="SFTP Client CD Service">
+            <participant name="SFTPClientCd" />
+            <output message="SFTPClientCdServiceTypeInputMessage">
+               <assign to="." from="*" />
+               <assign to="Directory">/home/bandaru/Destination</assign>
+            </output>
+            <input message="inmsg">
+               <assign to="." from="*" />
+            </input>
+         </operation>
+         <choice name="test">
+            <select>
+               <case ref="more_docs" activity="PutSeq" />
+            </select>
+            <sequence name="PutSeq">
+               <all>
+                  <operation name="SFTP Client PUT Service">
+                     <participant name="SFTPClientPut" />
+                     <output message="SFTPClientPutServiceTypeInputMessage">
+                        <assign to="." from="*" />
+                     </output>
+                     <input message="inmsg">
+                        <assign to="." from="*" />
+                     </input>
+                  </operation>
+                  <operation name="File System Adapter">
+                     <participant name="Collect_And_Extract_TTR" />
+                     <output message="FileSystemInputMessage">
+                        <assign to="Action">FS_EXTRACT</assign>
+                        <assign to="extractionFolder">C:\Extract</assign>
+                        <assign to="." from="*" />
+                     </output>
+                     <input message="inmsg">
+                        <assign to="." from="*" />
+                     </input>
+                  </operation>
+               </all>
+               <repeat name="endLoop" ref="forSequence" />
+            </sequence>
+         </choice>
+      </sequence>
+      <operation name="SFTP Client End Session Service">
+         <participant name="SFTPClientEndSession" />
+         <output message="SFTPClientEndSessionServiceTypeInputMessage">
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+   </sequence>
+</process>

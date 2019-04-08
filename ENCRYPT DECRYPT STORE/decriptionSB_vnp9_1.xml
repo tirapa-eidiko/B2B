@@ -1,0 +1,47 @@
+<process name = "decriptionSB_vnp9_1"> 
+  <sequence name="venky">
+
+<operation name="Lightweight JDBC Adapter">
+    <participant name="LightweightJDBCAdapterQuery"/>
+    <output message="LightweightJDBCAdapterTypeInputMessage">
+      <assign to="pool">db2Pool</assign>
+      <assign to="query_type">SELECT</assign>
+      <assign to="result_name">RESULT</assign>
+      <assign to="row_name">ROW</assign>
+      <assign to="sql">SELECT * FROM EN_DOC_STORE WHERE sym_id = '282051169b8d68e80node1'</assign>
+      <assign to="." from="*"></assign>
+    </output>
+    <input message="inmsg">
+      <assign to="." from="*"></assign>
+    </input>
+  </operation>
+    <assign to="PrimaryDocument" from="/ProcessData/doc-1/@SCIObjectID"></assign>
+    <operation name="EBICS Encryption Service">
+      <participant name="EBICSEncryptionService"/>
+      <output message="EBICSEncryptionServiceInputMessage">
+        <assign to="." from="*"></assign>
+        <assign to="action">decrypt</assign>
+        <assign to="CommSessionId">012345</assign>
+        <assign to="TransactionId">01234</assign>
+<assign to="SymmetricKeyId">282051169b8d68e80node1</assign>
+        <assign to="WfId">venkyt.txt</assign>
+      </output>
+      <input message="inmsg">
+        <assign to="." from="*"></assign>
+      </input>
+    </operation>
+
+    <operation name="File System Adapter">
+      <participant name="fileSystem_VN"/>
+      <output message="FileSystemInputMessage">
+        <assign to="." from="*"></assign>
+        <assign to="Action">FS_EXTRACT</assign>
+ <assign to="extractionFolder">C:\Users\db2admin\Downloads\venkyDeript</assign>
+      </output>
+      <input message="inmsg">
+        <assign to="." from="*"></assign>
+      </input>
+    </operation>
+
+  </sequence>
+</process>

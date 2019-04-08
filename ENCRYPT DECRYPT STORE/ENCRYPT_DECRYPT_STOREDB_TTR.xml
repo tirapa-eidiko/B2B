@@ -1,0 +1,65 @@
+<process name="ENCRYPT_DECRYPT_STOREDB_TTR">
+   <sequence name="encryptDecryptStore">
+      <operation name="File System Adapter">
+         <participant name="fileSystem_VN" />
+         <output message="FileSystemInputMessage">
+            <assign to="." from="*" />
+            <assign to="Action">FS_COLLECT</assign>
+            <assign to="collectionFolder">C:\Users\db2admin\Downloads\venky</assign>
+            <assign to="deleteAfterCollect">false</assign>
+            <assign to="assignedFilename">doc</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <operation name="EBICS Encryption Service">
+         <participant name="EBICSEncryptionService" />
+         <output message="EBICSEncryptionServiceInputMessage">
+            <assign to="." from="*" />
+            <assign to="action">encrypt</assign>
+            <assign to="CommSessionId">012345</assign>
+            <assign to="TransactionId">01234</assign>
+            <assign to="WfId">123</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+      <operation name="Lightweight JDBC Adapter">
+         <participant name="LIGHTWEIGHT_JDBC_ADAPTER_BLOB_CLOB_TTR" />
+         <output message="LightweightJDBCAdapterTypeInputMessage">
+            <assign to="." from="*" />
+            <assign to="param1" from="/ProcessData/FileName/text()" />
+            <assign to="param2" from="/ProcessData/SymmetricKeyId/text()" />
+            <assign to="param3" from="/ProcessData/TransactionId/text()" />
+            <assign to="param4" from="/ProcessData/FileName/text()" />
+            <assign to="paramtype1">String</assign>
+            <assign to="paramtype2">String</assign>
+            <assign to="paramtype3">String</assign>
+            <assign to="paramtype4">String</assign>
+            <assign to="paramtype5">BinaryStreamFromDocument</assign>
+            <assign to="pool">db2Pool</assign>
+            <assign to="query_type">INSERT</assign>
+            <assign to="result_name">RESULT</assign>
+            <assign to="row_name">ROW</assign>
+            <assign to="sql">INSERT INTO EN_DOC_STORE VALUES (?,?,?,?,?)</assign>
+         </output>
+         <input message="inmsg" />
+      </operation>
+      <operation name="EBICS Encryption Service">
+         <participant name="EBICSEncryptionService" />
+         <output message="EBICSEncryptionServiceInputMessage">
+            <assign to="." from="*" />
+            <assign to="action">decrypt</assign>
+            <assign to="SymmetricKeyId" from="/ProcessData/SymmetricKeyId/text()" />
+            <assign to="CommSessionId">012345</assign>
+            <assign to="TransactionId">01234</assign>
+            <assign to="WfId">123</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+   </sequence>
+</process>

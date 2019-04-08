@@ -1,0 +1,15 @@
+<process name="MAILBOX_LIST_TTR">
+   <sequence>
+      <operation name="Mailbox Query Service">
+         <participant name="MailboxQuery" />
+         <output message="MailboxQueryServiceTypeInputMessage">
+            <assign to="." from="*" />
+            <assign to="MailboxPath">/Inbox</assign>
+            <assign to="UseGlobalMailboxes">false</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+   </sequence>
+</process>

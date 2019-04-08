@@ -1,0 +1,44 @@
+<process name="MAILBOX_LIST_TTR">
+   <sequence>
+   
+      <operation name="Mailbox Query Service">
+         <participant name="MailboxQuery" />
+         <output message="MailboxQueryServiceTypeInputMessage">
+            <assign to="." from="*" />
+            <assign to="MailboxPath">/Inbox</assign>
+            <assign to="UseGlobalMailboxes">false</assign>
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+	  
+	  <operation name="File System Adapter">
+         <participant name="Collect_And_Extract_TTR" />
+         <output message="FileSystemInputMessage">
+            <assign to="Action">FS_COLLECT</assign>
+            <assign to="bootstrap">false</assign>
+            <assign to="collectionFolder">C:\Single-Source</assign>
+            <assign to="collectMultiple">false</assign>
+            <assign to="." from="*" />
+         </output>
+         <input message="inmsg">
+            <assign to="." from="*" />
+         </input>
+      </operation>
+	  
+	  <operation name="Mailbox Add Service"> 
+       <participant name="MailboxAdd"/> 
+           <output message="AddRequest"> 
+              <assign to="." from="*"></assign> 
+              <assign to="MailboxPath">/</assign> 
+              <assign to="ContentType">ascii</assign> 
+           </output> 
+            <input message="inmsg"> 
+                <assign to="AddResults" from="*"></assign> 
+           </input> 
+    </operation> 	
+	
+	
+   </sequence>
+</process>
